@@ -113,8 +113,8 @@ public final class Constants {
     public static final double SWERVE_DRIVE_D_VALUE = 0.007322; // 0.00089375
     public static final double SWERVE_DRIVE_FF_VALUE = 1023 / (MOTOR_MAXIMUM_VELOCITY / DRIVE_ENC_TO_METERS_FACTOR);
 
-    public static final double SWERVE_DRIVE_P_VELOCITY = -0.0256135252274057; //0.2928
-    public static final double SWERVE_DRIVE_I_VELOCITY = -0.42515784024188247;
+    public static final double SWERVE_DRIVE_P_VELOCITY = 0.0256135252274057; //0.2928
+    public static final double SWERVE_DRIVE_I_VELOCITY = 0.42515784024188247;
     public static final double SWERVE_DRIVE_D_VELOCITY = 0.0; // 0.00089375
     //public static final double SWERVE_DRIVE_FF_VALUE = 0.0d;
 

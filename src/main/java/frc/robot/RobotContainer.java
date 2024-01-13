@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.drive.DriveFieldRelative;
+import frc.robot.commands.drive.DriveFieldRelativeAdvanced;
 import frc.robot.commands.drive.DriveRobotCentric;
 import frc.robot.commands.drive.DriveRobotCentricDPAD;
 import frc.robot.commands.drive.DriveStopAllModules;
@@ -64,6 +64,7 @@ public class RobotContainer {
   static final Trigger driverDDown = new POVButton(driver, 180);
   static final Trigger driverDLeft = new POVButton(driver, 270);
   static final Trigger driverDRight = new POVButton(driver, 90);
+  
 
   ///////////////////////
   // CO-DRIVER BUTTONS //
@@ -96,7 +97,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     swerveDrive = new SwerveDrive();
-    swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
+    swerveDrive.setDefaultCommand(new DriveFieldRelativeAdvanced(false));
 
     configureSwerveSetup();
     configureSetupModes();
@@ -119,7 +120,7 @@ public class RobotContainer {
     /* ==================== DRIVER BUTTONS ==================== */
 
     driverStart.toggleOnTrue(new DriveRobotCentric(false));
-    driverBack.toggleOnTrue(new DriveFieldRelative(false));
+    driverBack.toggleOnTrue(new DriveFieldRelativeAdvanced(false));
 
     /* =================== CODRIVER BUTTONS =================== */
 
@@ -134,9 +135,9 @@ public class RobotContainer {
    */
   private void configureAutoModes() {
     
-    autoChooser.setDefaultOption("Wait 1 sec(do nothing)", new WaitCommand(1));
+    //autoChooser.setDefaultOption("Wait 1 sec(do nothing)", new WaitCommand(1));
 
-    SmartDashboard.putData(RobotContainer.autoChooser);
+    //SmartDashboard.putData(RobotContainer.autoChooser);
   }
 
   private void configureSwerveSetup() {
@@ -145,7 +146,7 @@ public class RobotContainer {
     // 1518
     SmartDashboard.putData(new DriveTranslationExport());
     SmartDashboard.putData(new DriveRotationExport());
-    SmartDashboard.putData("Drive Straight", Commands.sequence(Autos.autoDriveStraight()));
+    // SmartDashboard.putData("Drive Straight", Commands.sequence(Autos.autoDriveStraight()));
   }
 
   private void configureSetupModes() {
