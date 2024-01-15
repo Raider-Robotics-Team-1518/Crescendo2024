@@ -14,23 +14,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.drive.DriveFieldRelativeAdvanced;
+import frc.robot.commands.drive.DriveFieldRelative;
 import frc.robot.commands.drive.DriveRobotCentric;
-import frc.robot.commands.drive.DriveRobotCentricDPAD;
-import frc.robot.commands.drive.DriveStopAllModules;
 import frc.robot.commands.drive.util.DriveAdjustModulesManually;
-import frc.robot.commands.drive.util.DriveAllModulesPositionOnly;
-import frc.robot.commands.drive.util.DriveOneModule;
 import frc.robot.commands.drive.util.DriveResetAllModulePositionsToZero;
-import frc.robot.commands.drive.util.DriveTurnToAngleInRad;
 import frc.robot.commands.drive.util.pid.DriveRotationExport;
 import frc.robot.commands.drive.util.pid.DriveTranslationExport;
-import frc.robot.commands.struct.Autos;
 import frc.robot.subsystems.base.Lights;
 import frc.robot.subsystems.base.SwerveDrive;
 
@@ -87,8 +79,9 @@ public class RobotContainer {
 
 
   //The robot's subsystems are instantiated here
-  public static SwerveDrive swerveDrive;
-  
+  //public static SwerveDrive swerveDrive;
+  public static SwerveDrive swerveDrive; 
+
   /* Command Choosers */
   public static SendableChooser<Command> autoChooser = new SendableChooser<Command>(); // Autonomous
 
@@ -97,7 +90,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     swerveDrive = new SwerveDrive();
-    swerveDrive.setDefaultCommand(new DriveFieldRelativeAdvanced(false));
+    //swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
 
     configureSwerveSetup();
     configureSetupModes();
@@ -120,7 +113,7 @@ public class RobotContainer {
     /* ==================== DRIVER BUTTONS ==================== */
 
     driverStart.toggleOnTrue(new DriveRobotCentric(false));
-    driverBack.toggleOnTrue(new DriveFieldRelativeAdvanced(false));
+    driverBack.toggleOnTrue(new DriveFieldRelative(false));
 
     /* =================== CODRIVER BUTTONS =================== */
 
