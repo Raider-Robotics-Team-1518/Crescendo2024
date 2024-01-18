@@ -5,9 +5,13 @@
 package frc.robot;
 
 
+import java.io.File;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -17,14 +21,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.drive.DriveFieldRelative;
-import frc.robot.commands.drive.DriveRobotCentric;
-import frc.robot.commands.drive.util.DriveAdjustModulesManually;
-import frc.robot.commands.drive.util.DriveResetAllModulePositionsToZero;
-import frc.robot.commands.drive.util.pid.DriveRotationExport;
-import frc.robot.commands.drive.util.pid.DriveTranslationExport;
+// import frc.robot.commands.drive.DriveFieldRelative;
+// import frc.robot.commands.drive.DriveRobotCentric;
+// import frc.robot.commands.drive.util.DriveAdjustModulesManually;
+// import frc.robot.commands.drive.util.DriveResetAllModulePositionsToZero;
+// import frc.robot.commands.drive.util.pid.DriveRotationExport;
+// import frc.robot.commands.drive.util.pid.DriveTranslationExport;
 import frc.robot.subsystems.base.Lights;
-import frc.robot.subsystems.base.SwerveDrive;
+import swervelib.SwerveDrive;
+//import frc.robot.subsystems.base.SwerveDrive;
+import swervelib.parser.SwerveParser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -80,7 +86,8 @@ public class RobotContainer {
 
   //The robot's subsystems are instantiated here
   //public static SwerveDrive swerveDrive;
-  public static SwerveDrive swerveDrive; 
+  //public static SwerveDrive swerveDrive; 
+  public static SwerveDrive swerveDrive;
 
   /* Command Choosers */
   public static SendableChooser<Command> autoChooser = new SendableChooser<Command>(); // Autonomous
@@ -89,8 +96,14 @@ public class RobotContainer {
   public static Lights m_blinkies = new Lights();
 
   public RobotContainer() {
-    swerveDrive = new SwerveDrive();
+    //swerveDrive = new SwerveDrive();
     //swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
+    try {
+      swerveDrive = new SwerveParser(new File(Filesystem.getDeployDirectory(),"swerve")).createSwerveDrive(Units.feetToMeters(14.5));
+    }
+    catch(Exception e) {
+      System.out.println("YAGSL config files not found!!");
+    }
 
     configureSwerveSetup();
     configureSetupModes();
@@ -98,7 +111,6 @@ public class RobotContainer {
     configureButtonBindings();
     configureAutonomousEventMap();
     
-    SmartDashboard.putData(new DriveAdjustModulesManually());
     //NetworkTableInstance
     //NetworkTableInstance.getDefault().flush();
     //CameraServer.startAutomaticCapture();
@@ -112,8 +124,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* ==================== DRIVER BUTTONS ==================== */
 
-    driverStart.toggleOnTrue(new DriveRobotCentric(false));
-    driverBack.toggleOnTrue(new DriveFieldRelative(false));
+    // driverStart.toggleOnTrue(new DriveRobotCentric(false));
+    // driverBack.toggleOnTrue(new DriveFieldRelative(false));
 
     /* =================== CODRIVER BUTTONS =================== */
 
@@ -134,11 +146,8 @@ public class RobotContainer {
   }
 
   private void configureSwerveSetup() {
-    SmartDashboard.putData(new DriveResetAllModulePositionsToZero());
 
     // 1518
-    SmartDashboard.putData(new DriveTranslationExport());
-    SmartDashboard.putData(new DriveRotationExport());
     // SmartDashboard.putData("Drive Straight", Commands.sequence(Autos.autoDriveStraight()));
   }
 

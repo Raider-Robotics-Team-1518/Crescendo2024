@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    RobotContainer.swerveDrive.resetGyro();
+    //RobotContainer.swerveDrive.resetGyro();
     autonomousCommand = RobotContainer.autoChooser.getSelected();
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
@@ -84,7 +84,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    
+  }
 
   @Override
   public void testInit() {
