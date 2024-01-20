@@ -180,7 +180,13 @@ public final class Constants {
     public static final int FRONT_RIGHT_ROTATE_SENSOR = 14;//drive module 3
 
     /* Rev Robotics SparkMAXs */
-    
+    public static final int LEAD_INTAKE_MOTOR = 21;
+    public static final int FOLLOW_INTAKE_MOTOR = 22;
+    public static final int LEAD_SHOOTER_MOTOR = 23;
+    public static final int FOLLOW_SHOOTER_MOTOR = 24;
+    public static final int ELEVATION_MOTOR = 25;
+    public static final int CLIMB_MOTOR = 26;
+
     /* Solenoid Channels */
     
     /* Digital Input */

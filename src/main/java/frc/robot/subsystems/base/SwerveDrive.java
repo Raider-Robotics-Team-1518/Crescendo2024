@@ -36,7 +36,7 @@ public class SwerveDrive extends SubsystemBase {
   private static SwerveModule swerveModules[];
   private static SwerveModule frontLeft, rearLeft, rearRight, frontRight;
   public boolean isFieldRelative = false;
-  public AHRS imu;
+  // public AHRS imu;
   public SwerveDriveKinematics driveKinematics;
   public SwerveDriveOdometry driveOdometry;
   private PIDController robotSpinController;
@@ -83,7 +83,7 @@ public class SwerveDrive extends SubsystemBase {
       Constants.REAR_RIGHT_POSITION, Constants.FRONT_RIGHT_POSITION);
 
     // Constructs IMU object
-    imu = new AHRS(SerialPort.Port.kUSB);//Must use params, won't work without
+    // imu = new AHRS(SerialPort.Port.kUSB);//Must use params, won't work without
     
     //construct the odometry class.
     driveOdometry = new SwerveDriveOdometry(driveKinematics, getGyroRotation2d(), getSwerveModulePositions());
@@ -310,7 +310,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void resetGyro(){
     //Resets the gyro(zero it)
-    imu.reset();
+    // imu.reset();
   }
 
   /**
@@ -321,8 +321,8 @@ public class SwerveDrive extends SubsystemBase {
    * @param newCurrentAngle value the gyro should now read in degrees.
    */
   public void setGyro(double newCurrentAngle){
-    imu.reset();
-    imu.setAngleAdjustment(newCurrentAngle);
+    // imu.reset();
+    // imu.setAngleAdjustment(newCurrentAngle);
   }
 
   
@@ -358,8 +358,9 @@ public class SwerveDrive extends SubsystemBase {
    * @return the angle of the robot in degrees
    */
   public double getGyroInDeg(){
-    return imu.getAngle()*-1;//Pull gyro in degrees
+    // return imu.getAngle()*-1;//Pull gyro in degrees
     //note counterclockwise rotation is positive
+    return 0;
   }
 
   /**
@@ -368,7 +369,8 @@ public class SwerveDrive extends SubsystemBase {
    * @return degrees per second
    */
   public double getRotationalVelocity(){
-    return imu.getRate()*-1;
+    // return imu.getRate()*-1;
+    return 0;
   }
 
   /* =================== Pull From All Module Methods =================== */
