@@ -90,7 +90,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     swerveDrive = new SwerveDrive();
-    //swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
+    swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
 
     configureSwerveSetup();
     configureSetupModes();
