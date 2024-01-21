@@ -35,19 +35,21 @@ public class FieldManipulationUnit extends SubsystemBase {
 
   }
 
-  public Command run_intakeCommand() {
-    lead_intake_motor.set(0.5);
-    return isFinished();
+  public void setIntakeSpeed(double speed) {
+    lead_intake_motor.set(speed);
   }
 
-  public void stop_intakeCommand() {
+  public void stopIntake() {
     lead_intake_motor.set(0);
-
   }
 
-  public void run_shooterCommand() {
-    lead_shooter_motor.set(0.5);
+  public void bumpIntake() {
+    // run intake slowly to push Note into shooter
+    lead_intake_motor.set(Constants.MotorSpeeds.intakeBumpSpeed);
+  }
 
+  public void setShooterSpeed(double speed) {
+    lead_shooter_motor.set(speed);
   }
 
   public void stop_shooterCommand() {
@@ -57,30 +59,7 @@ public class FieldManipulationUnit extends SubsystemBase {
   public boolean isFinished() {
     return true;
   }
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
-  }
-
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
