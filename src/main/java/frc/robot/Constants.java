@@ -187,6 +187,16 @@ public final class Constants {
     public static final int ELEVATION_MOTOR = 25;
     public static final int CLIMB_MOTOR = 26;
 
+    /* Robot operational parameters */
+    public static final class MotorSpeeds {
+      public static final double intakeSpeed = 0.5d;
+      public static final double intakeBumpSpeed = 0.1d;
+      public static final double shooterSpeedForSpeaker = 0.5d;
+      public static final double shooterSpeedForAmp = -0.5d;
+      public static final double bumpDelayInSeconds = 0.5d;
+    }
+
+
     /* Solenoid Channels */
     
     /* Digital Input */

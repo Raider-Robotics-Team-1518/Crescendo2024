@@ -23,6 +23,8 @@ import frc.robot.commands.drive.util.DriveAdjustModulesManually;
 import frc.robot.commands.drive.util.DriveResetAllModulePositionsToZero;
 import frc.robot.commands.drive.util.pid.DriveRotationExport;
 import frc.robot.commands.drive.util.pid.DriveTranslationExport;
+import frc.robot.commands.fmu.Shooter;
+import frc.robot.commands.fmu.ShooterIntake;
 import frc.robot.subsystems.FieldManipulationUnit;
 import frc.robot.subsystems.base.Lights;
 import frc.robot.subsystems.base.SwerveDrive;
@@ -118,10 +120,14 @@ public class RobotContainer {
 
     driverStart.toggleOnTrue(new DriveRobotCentric(false));
     driverBack.toggleOnTrue(new DriveFieldRelative(false));
-    driverA.whileTrue(fmu.run_intakeCommand());
-    driverA.whileFalse(fmu.stop_intakeCommand());
-    driverY.whileTrue(fmu.run_shooterCommand());
-    driverY.whileFalse(fmu.stop_shooterCommand());
+
+    driverA.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
+    // end() sets speed to 0, so we probably don't need an whileFalse() call
+    // driverA.whileFalse(fmu.stop_intakeCommand());
+
+    driverY.whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker));
+    // end() sets speed to 0, so we probably don't need an whileFalse() call
+    // driverY.whileFalse(fmu.stop_shooterCommand());
 
     /* =================== CODRIVER BUTTONS =================== */
 
