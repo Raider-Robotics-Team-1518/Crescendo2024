@@ -23,11 +23,16 @@ public class FieldManipulationUnit extends SubsystemBase {
 
   public FieldManipulationUnit () {
     lead_shooter_motor = new CANSparkMax(Constants.LEAD_SHOOTER_MOTOR, MotorType.kBrushless);
+    lead_shooter_motor.setInverted(true);
+    lead_shooter_motor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+
     follow_shooter_motor = new CANSparkMax(Constants.FOLLOW_SHOOTER_MOTOR, MotorType.kBrushless);
+    follow_shooter_motor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+
     lead_intake_motor = new CANSparkMax(Constants.LEAD_INTAKE_MOTOR, MotorType.kBrushless);
     follow_intake_motor = new CANSparkMax(Constants.FOLLOW_INTAKE_MOTOR, MotorType.kBrushless);
 
-    //follow_shooter_motor.setInverted(true);
+    // follow_shooter_motor.setInverted(true);
     //follow_intake_motor.setInverted(true);
 
     follow_shooter_motor.follow(lead_shooter_motor);
