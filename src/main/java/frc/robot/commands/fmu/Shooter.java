@@ -29,9 +29,10 @@ public class Shooter extends Command {
     // spin the shooter motors to speed
     RobotContainer.fmu.setShooterSpeed(speed);
     // call WaitCommand, giving it a delay in seconds
-    // this should wait 1/2 sec for the shooter to come up to speed before bumping the Note into the shooter
-    new WaitCommand(Constants.MotorSpeeds.bumpDelayInSeconds);
-    RobotContainer.fmu.bumpIntake();
+    // this should wait for the shooter to come up to speed before bumping the Note into the shooter
+    // new WaitCommand(Constants.MotorSpeeds.bumpDelayInSeconds).andThen(() -> RobotContainer.fmu.bumpIntake());
+    // new ShooterIntake(Constants.MotorSpeeds.intakeBumpSpeed).beforeStarting(new WaitCommand(Constants.MotorSpeeds.bumpDelayInSeconds));
+    (new WaitCommand(Constants.MotorSpeeds.bumpDelayInSeconds)).andThen(() -> RobotContainer.fmu.setIntakeSpeed(Constants.MotorSpeeds.intakeBumpSpeed));
   }
 
   // Called once the command ends or is interrupted.

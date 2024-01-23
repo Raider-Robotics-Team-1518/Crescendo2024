@@ -190,10 +190,10 @@ public final class Constants {
     /* Robot operational parameters */
     public static final class MotorSpeeds {
       public static final double intakeSpeed = 0.5d;
-      public static final double intakeBumpSpeed = 0.1d;
-      public static final double shooterSpeedForSpeaker = 0.5d;
+      public static final double intakeBumpSpeed = 0.2d;
+      public static final double shooterSpeedForSpeaker = 1.0d;
       public static final double shooterSpeedForAmp = -0.5d;
-      public static final double bumpDelayInSeconds = 0.5d;
+      public static final double bumpDelayInSeconds = 2d;
     }
 
 
