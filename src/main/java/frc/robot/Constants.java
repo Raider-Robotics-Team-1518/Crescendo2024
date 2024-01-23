@@ -193,7 +193,7 @@ public final class Constants {
       public static final double intakeBumpSpeed = 0.2d;
       public static final double shooterSpeedForSpeaker = 1.0d;
       public static final double shooterSpeedForAmp = -0.5d;
-      public static final double bumpDelayInSeconds = 2d;
+      public static final double bumpDelayInSeconds = 0.5d;
     }
 
 

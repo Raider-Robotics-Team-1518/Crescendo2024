@@ -5,7 +5,8 @@
 package frc.robot.commands.fmu;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+// import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -32,7 +33,9 @@ public class Shooter extends Command {
     // this should wait for the shooter to come up to speed before bumping the Note into the shooter
     // new WaitCommand(Constants.MotorSpeeds.bumpDelayInSeconds).andThen(() -> RobotContainer.fmu.bumpIntake());
     // new ShooterIntake(Constants.MotorSpeeds.intakeBumpSpeed).beforeStarting(new WaitCommand(Constants.MotorSpeeds.bumpDelayInSeconds));
-    (new WaitCommand(Constants.MotorSpeeds.bumpDelayInSeconds)).andThen(() -> RobotContainer.fmu.setIntakeSpeed(Constants.MotorSpeeds.intakeBumpSpeed));
+    // (new WaitCommand(Constants.MotorSpeeds.bumpDelayInSeconds)).andThen(() -> RobotContainer.fmu.setIntakeSpeed(Constants.MotorSpeeds.intakeBumpSpeed));
+    Timer.delay(Constants.MotorSpeeds.bumpDelayInSeconds);
+    RobotContainer.fmu.setIntakeSpeed(Constants.MotorSpeeds.intakeBumpSpeed);
   }
 
   // Called once the command ends or is interrupted.
