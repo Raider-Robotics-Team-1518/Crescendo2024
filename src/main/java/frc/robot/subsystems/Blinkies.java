@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.LimeLight;
+import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 
 public class Blinkies extends SubsystemBase {
   public LEDState lightState = LEDState.DEFAULT;
@@ -15,6 +19,8 @@ public class Blinkies extends SubsystemBase {
   public final DigitalOutput dOutput2 = new DigitalOutput(2);
   public final DigitalOutput dOutput3 = new DigitalOutput(3);
   public final DigitalOutput dOutput4 = new DigitalOutput(4);
+  private LimelightTarget_Fiducial llAprilTag = new LimelightHelpers.LimelightTarget_Fiducial();
+  private LimeLight limelight = new LimeLight();
 
   public Blinkies() {
   }
@@ -24,41 +30,40 @@ public class Blinkies extends SubsystemBase {
     if(RobotState.isDisabled()) {
       setLEDState(LEDState.DEFAULT);
     } else {
+      int targetSpeakerAprilTag = 0;
+      int targetAmpAprilTag = 0;
+      int targetSourceAprilTag = 0;
+      String allianceColor = DriverStation.getAlliance().toString().toLowerCase();
+      switch(allianceColor) {
+        case "blue":
+          targetSpeakerAprilTag = Constants.AprilTagIds.blueSpeakerLeft;
+          targetAmpAprilTag = Constants.AprilTagIds.blueAmp;
+          targetSourceAprilTag = Constants.AprilTagIds.blueSourceLeft;
+          setLEDState(LEDState.BLUE);
+          break;
+        case "red":
+          targetSpeakerAprilTag = Constants.AprilTagIds.redSpeakerLeft;
+          targetAmpAprilTag = Constants.AprilTagIds.redAmp;
+          targetSourceAprilTag = Constants.AprilTagIds.redSourceLeft;
+          setLEDState(LEDState.RED);
+          break;
+      }
+
+      int fID = (int) llAprilTag.fiducialID;
+      if (fID > 0) {
+        if (fID == targetSpeakerAprilTag && limelight.getDistanceToTarget(fID) < Constants.FieldPositions.maxDistanceToSpeaker) {
+          setLEDState(LEDState.GREEN);
+        } else if (fID == targetAmpAprilTag && limelight.getDistanceToTarget(fID) < Constants.FieldPositions.maxDistanceToAmp) {
+          setLEDState(LEDState.GREEN);
+        } else if (fID == targetSourceAprilTag && limelight.getDistanceToTarget(fID) < Constants.FieldPositions.maxDistanceToSource) {
+          setLEDState(LEDState.YELLOW);
+        }
+      }
       /*
-       * Pseudo code:
-       *    if note is loaded:
-       *      show some solid color setLEDState(LEDState.ORANGE)
-       *    else if stage april tag in view and within shooting distance (so ready to shoot)
-       *      show some other color/pattern setLEDState(LEDState.GREEN)
-       *    else if loading station april tag in view and distance is NNN
-       *      show some other color/pattern  setLEDState(LEDState.PULSE_GREEN)
-       *    else
-       *      show alliance color
+      } else if (note is loaded) {
+        setLEDState(LEDState.ORANGE)
+      }
        */
-
-
-       /*
-      if(BallRejectSubsystem.getCurrentColorBall().equalsIgnoreCase("None")) {
-      } else if(BallShooterSubsystem.shooterMotor.get() > 0.1d) {
-        switch(RobotContainer.allianceColor.toString().toLowerCase()) {
-          case "blue":
-            setLEDState(LEDState.BLUE_WITH_RED_STRIPE);
-            return;
-          case "red":
-            setLEDState(LEDState.RED_WITH_BLUE_STRIPE);
-            return;
-        }
-      } else {
-        switch(DriverStation.getAlliance().toString().toLowerCase()) {
-          case "blue":
-            setLEDState(LEDState.PULSE_BLUE);
-            return;
-          case "red":
-            setLEDState(LEDState.PULSE_RED);
-            return;
-        }
-      } 
-      */
     }
   }
 
@@ -77,9 +82,9 @@ public class Blinkies extends SubsystemBase {
       DEFAULT(false, true, true), //(false, false, false),
       BLUE(false, true, false),
       RED(true, false, false),
-      PULSE_BLUE(false, false, true),
-      PULSE_RED(true, true, false),
-      RED_WITH_BLUE_STRIPE(false, true, true),
+      ORANGE(false, false, true),
+      GREEN(true, true, false),
+      YELLOW(false, true, true),
       BLUE_WITH_RED_STRIPE(true, false, true);
   
       private final boolean do1, do2, do3;

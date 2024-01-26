@@ -14,7 +14,6 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
-
 /**
  * This command is designed so that a driver can drive 
  * the swerve drive based around a fixed orientation.
@@ -62,6 +61,7 @@ public class DriveFieldRelative extends Command {
       rotSpeed*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL, 
       veloMode
     );
+
   }
 
   // Called once the command ends or is interrupted.
