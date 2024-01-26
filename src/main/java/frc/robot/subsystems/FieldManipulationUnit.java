@@ -4,12 +4,18 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Utils;
+
 
 
 public class FieldManipulationUnit extends SubsystemBase {
@@ -20,6 +26,10 @@ public class FieldManipulationUnit extends SubsystemBase {
   private CANSparkMax follow_intake_motor;
   private CANSparkMax climb_motor;
   private CANSparkMax elevation_motor;
+  private boolean override_note_is_loaded = false;
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  public final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+
 
   public FieldManipulationUnit () {
     lead_shooter_motor = new CANSparkMax(Constants.LEAD_SHOOTER_MOTOR, MotorType.kBrushless);
@@ -31,9 +41,6 @@ public class FieldManipulationUnit extends SubsystemBase {
 
     lead_intake_motor = new CANSparkMax(Constants.LEAD_INTAKE_MOTOR, MotorType.kBrushless);
     follow_intake_motor = new CANSparkMax(Constants.FOLLOW_INTAKE_MOTOR, MotorType.kBrushless);
-
-    // follow_shooter_motor.setInverted(true);
-    //follow_intake_motor.setInverted(true);
 
     follow_shooter_motor.follow(lead_shooter_motor);
     follow_intake_motor.follow(lead_intake_motor);
@@ -51,6 +58,9 @@ public class FieldManipulationUnit extends SubsystemBase {
   public void bumpIntake() {
     // run intake slowly to push Note into shooter
     lead_intake_motor.set(Constants.MotorSpeeds.intakeBumpSpeed);
+    override_note_is_loaded = true;
+    Timer.delay(Constants.Timings.resetColorSensorDelay);
+    override_note_is_loaded = false;
   }
 
   public void setShooterSpeed(double speed) {
@@ -64,9 +74,38 @@ public class FieldManipulationUnit extends SubsystemBase {
   public boolean isFinished() {
     return true;
   }
+
+  public boolean isNoteLoaded() {
+    Color detectedColor = m_colorSensor.getColor(); // returns a struct of doubles
+    double r = detectedColor.red;
+    double b = detectedColor.blue;
+    double g = detectedColor.green;
+    // calculate with Hue Saturation Value (HSV)
+    float hue = Utils.getHue((float)r, (float)g, (float)b);
+    if (hue > Constants.ColorValues.orangeHueMin && hue < Constants.ColorValues.orageHueMax) {
+      return true;
+    }
+
+    // alternatively, calculate using the RGB values
+    // orange has lots of red, a fair bit of blue, and not much green
+    // tune these amounts in the Constants file
+    // if (r > Constants.ColorValues.red && b > Constants.ColorValues.blue && g < Constants.ColorValues.green) {
+    //   return true;
+    // }
+
+
+    return false;
+  }
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
+    // COMMENTED OUT UNTIL WE INSTALL THE COLOR SENSOR
+    // if (!override_note_is_loaded) {
+    //   if (isNoteLoaded()) {
+    //     stopIntake();;
+    //   }
+    // }
   }
 }

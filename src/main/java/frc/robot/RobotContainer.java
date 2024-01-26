@@ -26,7 +26,7 @@ import frc.robot.commands.drive.util.pid.DriveTranslationExport;
 import frc.robot.commands.fmu.Shooter;
 import frc.robot.commands.fmu.ShooterIntake;
 import frc.robot.subsystems.FieldManipulationUnit;
-import frc.robot.subsystems.base.Lights;
+import frc.robot.subsystems.Blinkies;
 import frc.robot.subsystems.base.SwerveDrive;
 
 /**
@@ -90,7 +90,7 @@ public class RobotContainer {
   public static SendableChooser<Command> autoChooser = new SendableChooser<Command>(); // Autonomous
 
   /* LED Lights */
-  public static Lights m_blinkies = new Lights();
+  public static Blinkies m_blinkies = new Blinkies();
 
   public RobotContainer() {
     swerveDrive = new SwerveDrive();

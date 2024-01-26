@@ -193,9 +193,23 @@ public final class Constants {
       public static final double intakeBumpSpeed = 0.2d;
       public static final double shooterSpeedForSpeaker = 1.0d;
       public static final double shooterSpeedForAmp = -0.5d;
+    }
+    
+    public static final class Timings {
       public static final double bumpDelayInSeconds = 0.5d;
+      public static final double resetColorSensorDelay = 2.0d;
     }
 
+    public static final class ColorValues {
+      // For HSL, define the min & max of HUE that is orange
+      // see https://hslpicker.com/#ff6a00
+      public static final float orangeHueMin = 12.0f;
+      public static final float orageHueMax = 35.0f;
+      // For RGB, see https://rgbcolorcode.com/color/FFAA00
+      public static final double red = 0.8d;
+      public static final double blue = 0.5d;
+      public static final double green = 0.4d;
+    }
 
     /* Solenoid Channels */
     
