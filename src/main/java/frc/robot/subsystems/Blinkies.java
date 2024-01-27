@@ -79,13 +79,15 @@ public class Blinkies extends SubsystemBase {
       // the state of the DIO ports must match the code on the LED controller
       // which is looking for a pattern of highs & lows to determine the
       // color or pattern to show
-      DEFAULT(false, true, true), //(false, false, false),
-      BLUE(false, true, false),
-      RED(true, false, false),
-      ORANGE(false, false, true),
-      GREEN(true, true, false),
-      YELLOW(false, true, true),
-      BLUE_WITH_RED_STRIPE(true, false, true);
+      OFF(false, false, false), // 0
+      RED(true, false, false), // 1
+      BLUE(false, true, false), // 2
+      GREEN(true, true, false), // 3
+      ORANGE(false, false, true), // 4
+      YELLOW(true, false, true), // 5
+      PURPLE(false, true, true), // 6
+      DEFAULT(true, true, true); // 7
+
   
       private final boolean do1, do2, do3;
       private LEDState(boolean do1, boolean do2, boolean do3) {
