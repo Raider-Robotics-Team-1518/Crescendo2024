@@ -54,7 +54,7 @@ public class Blinkies extends SubsystemBase {
         if (fID == targetSpeakerAprilTag && limelight.getDistanceToTarget(fID) < Constants.FieldPositions.maxDistanceToSpeaker) {
           setLEDState(LEDState.GREEN);
         } else if (fID == targetAmpAprilTag && limelight.getDistanceToTarget(fID) < Constants.FieldPositions.maxDistanceToAmp) {
-          setLEDState(LEDState.GREEN);
+          setLEDState(LEDState.PURPLE);
         } else if (fID == targetSourceAprilTag && limelight.getDistanceToTarget(fID) < Constants.FieldPositions.maxDistanceToSource) {
           setLEDState(LEDState.YELLOW);
         }

@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
@@ -28,7 +29,7 @@ public class FieldManipulationUnit extends SubsystemBase {
   private CANSparkMax elevation_motor;
   private boolean override_note_is_loaded = false;
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
-  public final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
 
   public FieldManipulationUnit () {
@@ -80,25 +81,33 @@ public class FieldManipulationUnit extends SubsystemBase {
     double r = detectedColor.red;
     double b = detectedColor.blue;
     double g = detectedColor.green;
+
     // calculate with Hue Saturation Value (HSV)
     float hue = Utils.getHue((float)r, (float)g, (float)b);
+    SmartDashboard.putNumber("Hue", (double)hue);
+
     if (hue > Constants.ColorValues.orangeHueMin && hue < Constants.ColorValues.orageHueMax) {
+      SmartDashboard.putBoolean("Note Loaded", true);
       return true;
+    }
+    else {
+      SmartDashboard.putBoolean("Note Loaded", false);
+      return false;
     }
 
     // alternatively, calculate using the RGB values
     // orange has lots of red, a fair bit of blue, and not much green
     // tune these amounts in the Constants file
-    // if (r > Constants.ColorValues.red && b > Constants.ColorValues.blue && g < Constants.ColorValues.green) {
-    //   return true;
-    // }
-
-
-    return false;
+/*    if (r > Constants.ColorValues.red && b > Constants.ColorValues.blue && g < Constants.ColorValues.green) {
+      return true;
+    }
+*/
   }
   
   @Override
   public void periodic() {
+    isNoteLoaded();
+
     // This method will be called once per scheduler run
     
     // COMMENTED OUT UNTIL WE INSTALL THE COLOR SENSOR
