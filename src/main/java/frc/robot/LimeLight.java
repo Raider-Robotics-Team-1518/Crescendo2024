@@ -19,7 +19,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class LimeLight {
   private static NetworkTableInstance table = null;
-  private static String tableName = "";
+  private static String tableName = "limelight";
 
   public static enum LightMode {
     pipeline, off, blink, on

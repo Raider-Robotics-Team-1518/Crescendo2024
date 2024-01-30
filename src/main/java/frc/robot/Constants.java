@@ -154,9 +154,10 @@ public final class Constants {
     public static final double ROBOT_COUNTER_SPIN_D = 0.001;
 
     /* Driver Scaling Constants */
-    public static final double DRIVER_SPEED_SCALE_LINEAR = 0.5;
+    public static final double DRIVER_SPEED_SCALE_LINEAR = 0.875;
     public static final double DRIVER_SPEED_SCALE_LINEAR_LATERAL = 0.375;
     public static final double DRIVER_SPEED_SCALE_ROTATIONAL = .75;
+    public static final double DRIVE_SPEED_SCALE_FACTOR = 0.2; // scale down for "slow mode" (right stick)
 
     
     /* IDENTIFICATION NUMBERS FOR DEVICES */
@@ -233,15 +234,17 @@ public final class Constants {
     }
     public static final class FieldPositions {
       // inches, distance from the center of the Limelight lens to the floor
-      public static final double limelightMountingHeight = 5;
+      public static final double limelightMountingHeight = 8;
       // degrees, measured from vertical, with tilted up being positive
-      public static final double limelightMountingAngle = 25;
+      public static final double limelightMountingAngle = 21;
       // inches
-      public static final double speakerTagHeight = 53.88;
+      public static final double speakerTagHeight = 54.675;  // 53.88;
       // inches
-      public static final double ampTagHeight = 50.13;
+      public static final double ampTagHeight = 48.125;
       // inches
-      public static final double sourceTagHeight = 100;
+      public static final double sourceTagHeight = 48.125;
+      // inches
+      public static final double sourceTagSpacing = 19.0375;
       // inches
       public static final double maxDistanceToSpeaker = 100;
       // inches

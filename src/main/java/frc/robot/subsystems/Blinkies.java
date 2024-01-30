@@ -4,14 +4,20 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimeLight;
 import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.LimelightHelpers.Results;
 
 public class Blinkies extends SubsystemBase {
   public LEDState lightState = LEDState.DEFAULT;
@@ -21,48 +27,72 @@ public class Blinkies extends SubsystemBase {
   public final DigitalOutput dOutput4 = new DigitalOutput(4);
   private LimelightTarget_Fiducial llAprilTag = new LimelightHelpers.LimelightTarget_Fiducial();
   private LimeLight limelight = new LimeLight();
+  private LimelightHelpers llHelpers = new LimelightHelpers();
 
   public Blinkies() {
+    limelight.init("limelight");
   }
 
   @Override
   public void periodic() {
-    if(RobotState.isDisabled()) {
+    int fID = (int) llHelpers.getFiducialID("limelight");
+    SmartDashboard.putNumber("tx", llAprilTag.tx);
+    SmartDashboard.putNumber("fID", fID);
+    SmartDashboard.putNumber("Distance", limelight.getDistanceToTarget(fID));
+
+    if (RobotState.isDisabled()) {
       setLEDState(LEDState.DEFAULT);
     } else {
       int targetSpeakerAprilTag = 0;
       int targetAmpAprilTag = 0;
       int targetSourceAprilTag = 0;
-      String allianceColor = DriverStation.getAlliance().toString().toLowerCase();
-      switch(allianceColor) {
-        case "blue":
-          targetSpeakerAprilTag = Constants.AprilTagIds.blueSpeakerLeft;
-          targetAmpAprilTag = Constants.AprilTagIds.blueAmp;
-          targetSourceAprilTag = Constants.AprilTagIds.blueSourceLeft;
-          setLEDState(LEDState.BLUE);
-          break;
-        case "red":
-          targetSpeakerAprilTag = Constants.AprilTagIds.redSpeakerLeft;
-          targetAmpAprilTag = Constants.AprilTagIds.redAmp;
-          targetSourceAprilTag = Constants.AprilTagIds.redSourceLeft;
-          setLEDState(LEDState.RED);
-          break;
-      }
+      Optional<Alliance> allianceColorOpt = DriverStation.getAlliance();
+      if (allianceColorOpt.isPresent()) {
+        String allianceColor = allianceColorOpt.get().toString().toLowerCase();
+        switch (allianceColor) {
+          case "blue":
+            targetSpeakerAprilTag = Constants.AprilTagIds.blueSpeakerLeft;
+            targetAmpAprilTag = Constants.AprilTagIds.blueAmp;
+            targetSourceAprilTag = Constants.AprilTagIds.blueSourceLeft;
+            setLEDState(LEDState.BLUE);
+            break;
+          case "red":
+            targetSpeakerAprilTag = Constants.AprilTagIds.redSpeakerLeft;
+            targetAmpAprilTag = Constants.AprilTagIds.redAmp;
+            targetSourceAprilTag = Constants.AprilTagIds.redSourceLeft;
+            setLEDState(LEDState.RED);
+            break;
+        }
+        SmartDashboard.putString("alliance color", allianceColor);
+        SmartDashboard.putNumber("targetSpeakerTag", targetSpeakerAprilTag);
+        if (fID > 0) {
+          double distance = limelight.getDistanceToTarget(fID);
+          if (distance > 0) {
+            if (fID == targetSpeakerAprilTag && distance < Constants.FieldPositions.maxDistanceToSpeaker) {
+              setLEDState(LEDState.GREEN);
+              SmartDashboard.putString("LED Color", "green");
+            } else if (fID == targetAmpAprilTag && distance < Constants.FieldPositions.maxDistanceToAmp) {
+              setLEDState(LEDState.PURPLE);
+              SmartDashboard.putString("LED Color", "purple");
+            } else if (fID == targetSourceAprilTag && distance < Constants.FieldPositions.maxDistanceToSource) {
+              setLEDState(LEDState.YELLOW);
+              SmartDashboard.putString("LED Color", "yellow");
+            } else {
+              SmartDashboard.putString("LED Color", "black");
+            }
 
-      int fID = (int) llAprilTag.fiducialID;
-      if (fID > 0) {
-        if (fID == targetSpeakerAprilTag && limelight.getDistanceToTarget(fID) < Constants.FieldPositions.maxDistanceToSpeaker) {
-          setLEDState(LEDState.GREEN);
-        } else if (fID == targetAmpAprilTag && limelight.getDistanceToTarget(fID) < Constants.FieldPositions.maxDistanceToAmp) {
-          setLEDState(LEDState.PURPLE);
-        } else if (fID == targetSourceAprilTag && limelight.getDistanceToTarget(fID) < Constants.FieldPositions.maxDistanceToSource) {
-          setLEDState(LEDState.YELLOW);
+          } else {
+            SmartDashboard.putString("LED Color", "white");
+          }
+        } else {
+          SmartDashboard.putString("LED Color", "pink");
         }
       }
+
       /*
-      } else if (note is loaded) {
-        setLEDState(LEDState.ORANGE)
-      }
+       * } else if (note is loaded) {
+       * setLEDState(LEDState.ORANGE)
+       * }
        */
     }
   }
@@ -74,27 +104,26 @@ public class Blinkies extends SubsystemBase {
     this.lightState = state;
   }
 
-
   public enum LEDState {
-      // the state of the DIO ports must match the code on the LED controller
-      // which is looking for a pattern of highs & lows to determine the
-      // color or pattern to show
-      OFF(false, false, false), // 0
-      RED(true, false, false), // 1
-      BLUE(false, true, false), // 2
-      GREEN(true, true, false), // 3
-      ORANGE(false, false, true), // 4
-      YELLOW(true, false, true), // 5
-      PURPLE(false, true, true), // 6
-      DEFAULT(true, true, true); // 7
+    // the state of the DIO ports must match the code on the LED controller
+    // which is looking for a pattern of highs & lows to determine the
+    // color or pattern to show
+    OFF(false, false, false), // 0
+    RED(true, false, false), // 1
+    BLUE(false, true, false), // 2
+    GREEN(true, true, false), // 3
+    ORANGE(false, false, true), // 4
+    YELLOW(true, false, true), // 5
+    PURPLE(false, true, true), // 6
+    DEFAULT(true, true, true); // 7
 
-  
-      private final boolean do1, do2, do3;
-      private LEDState(boolean do1, boolean do2, boolean do3) {
-        this.do1 = do1;
-        this.do2 = do2;
-        this.do3 = do3;
-      }
+    private final boolean do1, do2, do3;
+
+    private LEDState(boolean do1, boolean do2, boolean do3) {
+      this.do1 = do1;
+      this.do2 = do2;
+      this.do3 = do3;
+    }
   }
 
-  }
+}

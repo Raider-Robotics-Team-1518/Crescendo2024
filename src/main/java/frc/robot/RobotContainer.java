@@ -107,7 +107,6 @@ public class RobotContainer {
     //NetworkTableInstance
     //NetworkTableInstance.getDefault().flush();
     //CameraServer.startAutomaticCapture();
-    SmartDashboard.putBoolean("Note Loaded", fmu.isNoteLoaded());
   }
 
   private void configureAutonomousEventMap() {
