@@ -185,15 +185,18 @@ public final class Constants {
     public static final int FOLLOW_INTAKE_MOTOR = 22;
     public static final int LEAD_SHOOTER_MOTOR = 23;
     public static final int FOLLOW_SHOOTER_MOTOR = 24;
-    public static final int ELEVATION_MOTOR = 25;
-    public static final int CLIMB_MOTOR = 26;
+    public static final int LEAD_ARM_MOTOR = 25;
+    public static final int FOLLOW_ARM_MOTOR = 26;
+    public static final int CLIMB_MOTOR = 27;
 
     /* Robot operational parameters */
     public static final class MotorSpeeds {
       public static final double intakeSpeed = 0.5d;
-      public static final double intakeBumpSpeed = 0.2d;
+      public static final double intakeBumpSpeed = 1.0d;
+      public static final double intakeReverse = -0.35d;
       public static final double shooterSpeedForSpeaker = 1.0d;
       public static final double shooterSpeedForAmp = -0.5d;
+      public static final double armPower = 0.25d;
     }
     
     public static final class Timings {

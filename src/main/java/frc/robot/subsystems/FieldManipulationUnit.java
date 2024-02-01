@@ -26,7 +26,8 @@ public class FieldManipulationUnit extends SubsystemBase {
   private CANSparkMax lead_intake_motor;
   private CANSparkMax follow_intake_motor;
   private CANSparkMax climb_motor;
-  private CANSparkMax elevation_motor;
+  private CANSparkMax lead_arm_motor;
+  private CANSparkMax follow_arm_motor;
   private boolean override_note_is_loaded = false;
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
@@ -43,8 +44,14 @@ public class FieldManipulationUnit extends SubsystemBase {
     lead_intake_motor = new CANSparkMax(Constants.LEAD_INTAKE_MOTOR, MotorType.kBrushless);
     follow_intake_motor = new CANSparkMax(Constants.FOLLOW_INTAKE_MOTOR, MotorType.kBrushless);
 
+    lead_arm_motor = new CANSparkMax(Constants.LEAD_ARM_MOTOR, MotorType.kBrushless);
+    follow_arm_motor = new CANSparkMax(Constants.FOLLOW_ARM_MOTOR, MotorType.kBrushless);
+
+    climb_motor = new CANSparkMax(Constants.CLIMB_MOTOR, MotorType.kBrushless);
+
     follow_shooter_motor.follow(lead_shooter_motor);
     follow_intake_motor.follow(lead_intake_motor);
+    follow_arm_motor.follow(lead_arm_motor);
 
   }
 

@@ -128,6 +128,8 @@ public class RobotContainer {
     // end() sets speed to 0, so we probably don't need an whileFalse() call
     // driverY.whileFalse(fmu.stop_shooterCommand());
 
+    driverB.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
+
     /* =================== CODRIVER BUTTONS =================== */
 
   }
