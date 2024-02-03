@@ -5,16 +5,25 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 
+import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.StaticBrake;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.MotorFeedbackSensor;
 
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Utils;
 
 
@@ -26,8 +35,9 @@ public class FieldManipulationUnit extends SubsystemBase {
   private CANSparkMax lead_intake_motor;
   private CANSparkMax follow_intake_motor;
   private CANSparkMax climb_motor;
-  private CANSparkMax lead_arm_motor;
-  private CANSparkMax follow_arm_motor;
+  private TalonFX lead_arm_motor;
+  private TalonFX follow_arm_motor;
+  private Encoder arm_position;
   private boolean override_note_is_loaded = false;
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
@@ -37,21 +47,26 @@ public class FieldManipulationUnit extends SubsystemBase {
     lead_shooter_motor = new CANSparkMax(Constants.LEAD_SHOOTER_MOTOR, MotorType.kBrushless);
     lead_shooter_motor.setInverted(true);
     lead_shooter_motor.setIdleMode(CANSparkMax.IdleMode.kCoast);
-
     follow_shooter_motor = new CANSparkMax(Constants.FOLLOW_SHOOTER_MOTOR, MotorType.kBrushless);
+    follow_shooter_motor.setInverted(true);
     follow_shooter_motor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    //follow_shooter_motor.follow(lead_shooter_motor); // Removed to set differential speeds
 
     lead_intake_motor = new CANSparkMax(Constants.LEAD_INTAKE_MOTOR, MotorType.kBrushless);
     follow_intake_motor = new CANSparkMax(Constants.FOLLOW_INTAKE_MOTOR, MotorType.kBrushless);
+    follow_intake_motor.follow(lead_intake_motor);
 
-    lead_arm_motor = new CANSparkMax(Constants.LEAD_ARM_MOTOR, MotorType.kBrushless);
-    follow_arm_motor = new CANSparkMax(Constants.FOLLOW_ARM_MOTOR, MotorType.kBrushless);
+    lead_arm_motor = new TalonFX(Constants.LEAD_ARM_MOTOR);
+    lead_arm_motor.setInverted(true);
+    lead_arm_motor.setControl(new StaticBrake());
+    follow_arm_motor = new TalonFX(Constants.FOLLOW_ARM_MOTOR);
+    follow_arm_motor.setControl(new StaticBrake());
+    follow_arm_motor.setControl(new Follower(Constants.LEAD_ARM_MOTOR, true));
+    arm_position = new Encoder(5, 6, false, EncodingType.k1X);
+    arm_position.setDistancePerPulse(1.0d);
+    arm_position.setMinRate(1.0d);
 
     climb_motor = new CANSparkMax(Constants.CLIMB_MOTOR, MotorType.kBrushless);
-
-    follow_shooter_motor.follow(lead_shooter_motor);
-    follow_intake_motor.follow(lead_intake_motor);
-    follow_arm_motor.follow(lead_arm_motor);
 
   }
 
@@ -73,10 +88,31 @@ public class FieldManipulationUnit extends SubsystemBase {
 
   public void setShooterSpeed(double speed) {
     lead_shooter_motor.set(speed);
+    follow_shooter_motor.set(speed * 0.95d);
   }
 
   public void stop_shooterCommand() {
     lead_shooter_motor.set(0);
+  }
+
+  public void move_arm(double power){
+    lead_arm_motor.set(power);
+  }
+
+  public void stop_arm(){
+    lead_arm_motor.set(0);
+  }
+
+  public void move_climb(double power){
+    climb_motor.set(power);
+  }
+
+  public void stop_climb(){
+    climb_motor.set(0);
+  }
+
+  public int get_arm_position(){
+    return arm_position.get();
   }
 
   public boolean isFinished() {
@@ -114,7 +150,6 @@ public class FieldManipulationUnit extends SubsystemBase {
   @Override
   public void periodic() {
     isNoteLoaded();
-
     // This method will be called once per scheduler run
     
     // COMMENTED OUT UNTIL WE INSTALL THE COLOR SENSOR

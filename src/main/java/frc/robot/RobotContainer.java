@@ -23,6 +23,8 @@ import frc.robot.commands.drive.util.DriveAdjustModulesManually;
 import frc.robot.commands.drive.util.DriveResetAllModulePositionsToZero;
 import frc.robot.commands.drive.util.pid.DriveRotationExport;
 import frc.robot.commands.drive.util.pid.DriveTranslationExport;
+import frc.robot.commands.fmu.Arm;
+import frc.robot.commands.fmu.Climb;
 import frc.robot.commands.fmu.Shooter;
 import frc.robot.commands.fmu.ShooterIntake;
 import frc.robot.subsystems.FieldManipulationUnit;
@@ -97,6 +99,7 @@ public class RobotContainer {
     swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
 
     fmu = new FieldManipulationUnit();
+    fmu.setDefaultCommand(new Arm());
 
     configureSwerveSetup();
     configureSetupModes();
@@ -129,6 +132,9 @@ public class RobotContainer {
     // driverY.whileFalse(fmu.stop_shooterCommand());
 
     driverB.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
+
+    driverDUp.whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
+    driverDDown.whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));
 
     /* =================== CODRIVER BUTTONS =================== */
 

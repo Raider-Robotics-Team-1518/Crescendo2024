@@ -53,12 +53,12 @@ public class DriveFieldRelativeAdvanced extends Command {
     double awaySpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftY)*0.5;
     double lateralSpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftX)*0.5;
     //check if secondary sticks are being used
-    if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
+    /*if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
       Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightX))>.1){
       //if secondary sticks used, replace with secondary sticks witha slow factor
       awaySpeed = Robot.robotContainer.getDriverAxis(Axis.kRightY)*.375;
       lateralSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightX)*.375;
-    }
+    }*/
     //create rotation speed from gamepad triggers
     double rotSpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger) - Robot.robotContainer.getDriverAxis(Axis.kRightTrigger);
 

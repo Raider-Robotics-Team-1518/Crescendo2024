@@ -26,7 +26,9 @@ public class ShooterIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.fmu.setIntakeSpeed(speed);
+    if (!RobotContainer.fmu.isNoteLoaded()) {
+      RobotContainer.fmu.setIntakeSpeed(speed);
+    }
   }
 
   // Called once the command ends or is interrupted.

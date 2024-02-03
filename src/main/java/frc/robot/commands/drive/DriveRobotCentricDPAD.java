@@ -52,14 +52,14 @@ public class DriveRobotCentricDPAD extends Command {
     double strafeSpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftX);
     strafeSpeed *= 0.5;
     //check if secondary sticks are being used
-    if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
+    /*if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
       Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightX))>.1){
       //if secondary sticks used, replace with secondary sticks witha slow factor
       forwardSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightY)*.375;
       forwardSpeed *= 0.5;
       strafeSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightX)*.375;
       strafeSpeed *= 0.5;
-    }
+    }*/
     //create rotation speed from gamepad triggers
     double rotSpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger) - Robot.robotContainer.getDriverAxis(Axis.kRightTrigger);
 
