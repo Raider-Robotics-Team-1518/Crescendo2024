@@ -12,19 +12,15 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderStatusFrame;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
 
 import frc.robot.Constants;
 
@@ -52,7 +48,8 @@ public class SwerveModule {
     // We'll use it to tell where we are and where we want to be, but due to the
     // discontinuity from -180 to 180, it can't be used for motion. We use the 
     // rotateRelEncoder for that.
-    private CANCoder rotateAbsSensor;
+    private CANcoder rotateAbsSensor;
+    private double magneticOffset = 0.0;
 
     /**
      * Creates a new SwerveModule object
@@ -64,21 +61,32 @@ public class SwerveModule {
      * @param canCoderID      The CAN ID of the rotation sensor
      */
     public SwerveModule(int driveMotorID, int rotationMotorID, int canCoderID, boolean isInverted) {
+        final String canBusName = "rio";
         
-        //contruct and setup drive falcon
+        /* CONTRUCT AND SETUP DRIVE MOTOR */
         driveMotor = new TalonFX(driveMotorID);
-        driveMotor.configFactoryDefault();
+        TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration();
         // use the integrated sensor with the primary closed loop and timeout is 0.
-        driveMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        driveMotor.configSelectedFeedbackCoefficient(Constants.DRIVE_ENC_TO_METERS_FACTOR);//Constants.DRIVE_ENC_TO_METERS_FACTOR);
+        driveMotorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+        driveMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        // Peak output of 40 amps
+        driveMotorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 40;
+        driveMotorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -40;
+
+        // not sure if we need these, but I found them in an example
+        // driveMotorConfig.Feedback.SensorToMechanismRatio = 1.0;
+        // driveMotorConfig.Feedback.RotorToSensorRatio = 12.8;
+
+        // Need to figure out this setting, there's no direct equivalent in CTRE6
+        // driveMotor.configSelectedFeedbackCoefficient(Constants.DRIVE_ENC_TO_METERS_FACTOR);//Constants.DRIVE_ENC_TO_METERS_FACTOR);
         // above uses configSelectedFeedbackCoefficient(), to scale the
         // driveMotor to real distance, DRIVE_ENC_TO_METERS_FACTOR
-        driveMotor.setNeutralMode(NeutralMode.Brake);
-        driveMotor.setInverted(isInverted);// Set motor inverted(set to false)
+
+        /*
+        There are no CTRE6 equivalents for these that I can find
+
         driveMotor.enableVoltageCompensation(true);
         driveMotor.configVoltageCompSaturation(Constants.MAXIMUM_VOLTAGE);
-        setDriveMotorPIDF(Constants.SWERVE_DRIVE_P_VALUE, Constants.SWERVE_DRIVE_I_VALUE,
-                          Constants.SWERVE_DRIVE_D_VALUE, Constants.SWERVE_DRIVE_FF_VALUE);
         driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 253);
         driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);//This is key to odometry must be around same as code loop
         driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 251);
@@ -89,57 +97,67 @@ public class SwerveModule {
         driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmwareApiStatus, 255);
         driveMotor.setSelectedSensorPosition(0.0);
 
-        //contruct and setup rotation falcon
+         */
+
+        // apply the configuration to the motor
+        driveMotor.getConfigurator().apply(driveMotorConfig);
+        driveMotor.setInverted(isInverted);// Set motor inverted(set to false)
+
+        setDriveMotorPIDF(Constants.SWERVE_DRIVE_P_VALUE, Constants.SWERVE_DRIVE_I_VALUE,
+                          Constants.SWERVE_DRIVE_D_VALUE, Constants.SWERVE_DRIVE_FF_VALUE);
+
+
+        /* CONTRUCT AND SET UP CAN CODER */
+        rotateAbsSensor = new CANcoder(canCoderID, canBusName);
+        var canCoderCfg = new CANcoderConfiguration();
+        canCoderCfg.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        // canCoderCfg.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        rotateAbsSensor.getConfigurator().apply(canCoderCfg);
+
+        /* Speed up signals to an appropriate rate */
+        rotateAbsSensor.getPosition().setUpdateFrequency(100);
+        rotateAbsSensor.getVelocity().setUpdateFrequency(100);
+
+        // I can't find a V6 equivalent for these
+        // rotateAbsSensor.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 20);//The default on this is 10, but 20 might be better given our code loop rate
+        // rotateAbsSensor.setStatusFramePeriod(CANCoderStatusFrame.VbatAndFaults, 255);
+
+        
+        /* CONTRUCT AND SET UP ROTATION MOTOR */
         rotationMotor = new TalonFX(rotationMotorID);
-        rotationMotor.configFactoryDefault();
+        TalonFXConfiguration rotationMotorConfig = new TalonFXConfiguration();
         // use the integrated sensor with the primary closed loop and timeout is 0.
-        rotationMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        rotationMotor.configSelectedFeedbackCoefficient(1);
-        rotationMotor.setNeutralMode(NeutralMode.Brake);
-        rotationMotor.setInverted(true);// Set motor inverted(set to true)
-        rotationMotor.enableVoltageCompensation(true);
-        rotationMotor.configVoltageCompSaturation(Constants.MAXIMUM_VOLTAGE);
-        setRotationMotorPIDF(Constants.SWERVE_ROT_P_VALUE, Constants.SWERVE_ROT_I_VALUE,
-                          Constants.SWERVE_ROT_D_VALUE, Constants.SWERVE_ROT_FF_VALUE);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 240);//This packet is the motor output, limit switches, faults, we care about none of those
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);//This is the sensor feedback, i.e. relative encoder
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 251);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 241);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 239);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 233);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 229);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmwareApiStatus, 255);
-        rotationMotor.setSelectedSensorPosition(0.0);
-        rotationMotor.configAllowableClosedloopError(0, Constants.SWERVE_MODULE_TOLERANCE, 0);
-        
+        rotationMotorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+        rotationMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        // Peak output of 40 amps
+        rotationMotorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 30;
+        rotationMotorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -30;
 
-        //the following sensor is angle of the module, as an absolute value
-        rotateAbsSensor = new CANCoder(canCoderID);
-        rotateAbsSensor.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        rotateAbsSensor.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 20);//The default on this is 10, but 20 might be better given our code loop rate
-        rotateAbsSensor.setStatusFramePeriod(CANCoderStatusFrame.VbatAndFaults, 255);
-        
+        // Associate the cancoder with the rotation motor
+        rotationMotorConfig.Feedback.FeedbackRemoteSensorID = rotateAbsSensor.getDeviceID();
+        rotationMotorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+
+        rotationMotor.getConfigurator().apply(rotationMotorConfig);
+        rotationMotor.setInverted(true);// Set motor inverted(set to false)
     }
 
 
     /**
-     * Set the speed of the drive motor in percent duty cycle
+     * Set the speed of the drive motor
      * 
-     * @param dutyCycle a number between -1.0 and 1.0, where 0.0 is not moving, as
-     *                  percent duty cycle
+     * @param speed a number between -1.0 and 1.0, where 0.0 is not moving
      */
-    public void setDriveMotor(double dutyCycle) {
-        driveMotor.set(TalonFXControlMode.PercentOutput, dutyCycle );
+    public void setDriveMotor(double speed) {
+        driveMotor.set(speed);
     }
 
     /**
-     * Set the speed of the rotation motor in percent duty cycle
+     * Set the speed of the rotation motor
      * 
-     * @param dutyCycle a number between -1.0 and 1.0, where 0.0 is not moving, as
-     *                  percent duty cycle
+     * @param speed a number between -1.0 and 1.0, where 0.0 is not moving
      */
-    public void setRotationMotor(double dutyCycle) {
-        rotationMotor.set(TalonFXControlMode.PercentOutput, dutyCycle );
+    public void setRotationMotor(double speed) {
+        rotationMotor.set(speed );
     }
 
     /**
@@ -150,7 +168,7 @@ public class SwerveModule {
      */
     public void setDriveSpeed(double speed) {
         double dutyCycleSpeed = driveVelocityController.calculate(this.getDriveVelocity(), speed);
-        driveMotor.set(TalonFXControlMode.PercentOutput, dutyCycleSpeed);
+        driveMotor.set(dutyCycleSpeed);
     }
 
     
@@ -160,7 +178,7 @@ public class SwerveModule {
      * 
      * @param neutral whether to brake or coast   
      */
-    public void setDriveMotorMode(NeutralMode neutral){
+    public void setDriveMotorMode(NeutralModeValue neutral){
         driveMotor.setNeutralMode(neutral);
     }
 
@@ -168,7 +186,8 @@ public class SwerveModule {
      * @return the distance the drive wheel has traveled
      */
     public double getDriveDistance() {
-        return driveMotor.getSensorCollection().getIntegratedSensorPosition()*Constants.DRIVE_ENC_TO_METERS_FACTOR;
+        StatusSignal<Double> pos = driveMotor.getPosition().clone();
+        return pos.getValueAsDouble();
     }
 
     /**
@@ -177,7 +196,8 @@ public class SwerveModule {
      * @return speed of the drive wheel
      */
     public double getDriveVelocity() {
-        return driveMotor.getSensorCollection().getIntegratedSensorVelocity()*10*Constants.DRIVE_ENC_TO_METERS_FACTOR;
+        StatusSignal<Double> vel = driveMotor.getVelocity().clone();
+        return vel.getValueAsDouble() * 10 * Constants.DRIVE_ENC_TO_METERS_FACTOR;
     }
 
     /**
@@ -185,7 +205,7 @@ public class SwerveModule {
      * essentially resetting it. 
      */
     public void resetDriveMotorEncoder() {
-        driveMotor.setSelectedSensorPosition(0.0);// this code sets the Drive position to 0.0
+        driveMotor.setPosition(0.0);
     }
 
     /**
@@ -197,10 +217,12 @@ public class SwerveModule {
      * @param F value of the F constant
      */
     public void setDriveMotorPIDF(double P, double I, double D, double F) {
-        driveMotor.config_kP(0, P);
-        driveMotor.config_kI(0, I);
-        driveMotor.config_kD(0, D);
-        driveMotor.config_kF(0, F);
+        // There doesn't seem to be a way to set the F (feed forward) parameter
+        TalonFXConfiguration cfg = new TalonFXConfiguration();
+        cfg.Slot0.kP = P;
+        cfg.Slot0.kI = I;
+        cfg.Slot0.kD = D;
+        driveMotor.getConfigurator().apply(cfg);
     }
 
     /**
@@ -212,37 +234,42 @@ public class SwerveModule {
      * @param F value of the F constant
      */
     public void setRotationMotorPIDF(double P, double I, double D, double F) {
-        rotationMotor.config_kP(0, P);
-        rotationMotor.config_kI(0, I);
-        rotationMotor.config_kD(0, D);
-        rotationMotor.config_kF(0, F);
+        // There doesn't seem to be a way to set the F (feed forward) parameter
+        TalonFXConfiguration cfg = new TalonFXConfiguration();
+        cfg.Slot0.kP = P;
+        cfg.Slot0.kI = I;
+        cfg.Slot0.kD = D;
+        rotationMotor.getConfigurator().apply(cfg);
     }
 
     /**
-     * The CANCoder has a mechanical zero point, this is hard 
+     * The CANcoder has a mechanical zero point, this is hard 
      * to move, so this method is used to set the offset of the 
-     * CANCoder so we can dictate the zero position. 
+     * CANcoder so we can dictate the zero position. 
      * INPUTS MUST BE IN DEGREES. 
      * 
      * @param value a number between -180 and 180, where 0 is straight ahead
      */
     private void setRotateAbsSensor(double value) {
-        rotateAbsSensor.configMagnetOffset(value, 0);
+        magneticOffset = value;
+        var canCoderCfg = new CANcoderConfiguration();
+        canCoderCfg.MagnetSensor.MagnetOffset = value;
+        rotateAbsSensor.getConfigurator().apply(canCoderCfg);
     }
 
     /**
-     * The CANCoder has a mechanical zero point, this is hard 
+     * The CANcoder has a mechanical zero point, this is hard 
      * to move, so this method is used to change the offset of 
-     * the CANCoder so we dictate the zero position as the 
+     * the CANcoder so we dictate the zero position as the 
      * current position of the module.
      */
     public void zeroAbsPositionSensor() {
         //find the current offset, subtract the current position, and makes this number the new offset.
-        setRotateAbsSensor(this.rotateAbsSensor.configGetMagnetOffset()-getAbsPosInDeg());
+        setRotateAbsSensor(this.magneticOffset-getAbsPosInDeg());
     }
 
     /**
-     * The CANCoder reads the absolute rotational position
+     * The CANcoder reads the absolute rotational position
      * of the module. This method returns that positon in 
      * degrees.
      * note: NOT Inverted module safe (use getPosInRad())
@@ -250,7 +277,10 @@ public class SwerveModule {
      * @return the position of the module in degrees, should limit from -180 to 180
      */
     public double getAbsPosInDeg() {
-        return rotateAbsSensor.getAbsolutePosition();
+        StatusSignal<Double> pos = rotateAbsSensor.getAbsolutePosition();
+        // because we set the range to AbsoluteSensorRangeValue.Signed_PlusMinusHalf, our
+        // range of values is -0.5 - 0.5. Mult by 360 to get -180 - 180
+        return pos.getValueAsDouble() * 360;
     }
 
     /**
@@ -302,11 +332,12 @@ public class SwerveModule {
     }
 
     public double getRotationSensorPosContinuous() {
-        return rotationMotor.getSelectedSensorPosition();
+        StatusSignal<Double> pos = rotateAbsSensor.getPositionSinceBoot();
+        return pos.getValueAsDouble();
     }
 
     public void resetRotationSensorPosition() {
-        rotationMotor.setSelectedSensorPosition(0.0d);
+        rotateAbsSensor.setPosition(0);
     }
 
     /**
@@ -318,7 +349,10 @@ public class SwerveModule {
      * @return the encoder count(no units, naturally just the count)
      */
     public double getRelEncCount() {
-        return rotationMotor.getSelectedSensorPosition();
+        // NOT SURE THIS IS CORRECT, there doesn't seem to be a method to get the encoder count
+        StatusSignal<Double> pos = rotateAbsSensor.getPosition();
+        return  pos.getValueAsDouble();
+
     }
     
     /**
@@ -360,7 +394,8 @@ public class SwerveModule {
             stopAll();
         } else {
             // Set the setpoint using setReference on the TalonFX
-            rotationMotor.set(TalonFXControlMode.Position, outputEncValue);
+            rotateAbsSensor.setPosition(outputEncValue);
+            // was: rotationMotor.set(TalonFXControlMode.Position, outputEncValue);
 
             // Output to drive motor based on velomode or not
             if (isVeloMode) {
@@ -373,11 +408,15 @@ public class SwerveModule {
     }  
 
     public double getExpectedInVelocity() {
-        return this.driveMotor.getMotorOutputPercent();
+        // was return this.driveMotor.getMotorOutputPercent();
+        double out = this.driveMotor.get();  // range of -1 to 1
+        return out * 100;
+
     }
 
     public double getOutVelocity() {
-        return this.driveMotor.getSelectedSensorVelocity();
+        StatusSignal<Double> vel = this.driveMotor.getVelocity();
+        return vel.getValueAsDouble();
     }
 
     /**
@@ -414,7 +453,8 @@ public class SwerveModule {
         double outputEncValue = targetAngle + getRelEncCount();
         
         // Set the setpoint using setReference on the TalonFX
-        rotationMotor.set(TalonFXControlMode.Position, outputEncValue);
+        rotateAbsSensor.setPosition(outputEncValue);
+        // was: rotationMotor.set(TalonFXControlMode.Position, outputEncValue);
 
         // Output to drive motor based on velomode or not
         if (isVeloMode) {
@@ -434,7 +474,7 @@ public class SwerveModule {
      * @param speed a percent output from -1.0 to 1.0, where 0.0 is stopped
      */
     public void driveRotateMotor(double speed) {
-        this.rotationMotor.set(TalonFXControlMode.PercentOutput, speed);
+        this.rotationMotor.set(speed);
     }
 
     /**
@@ -444,8 +484,8 @@ public class SwerveModule {
      * DutyCyclevoltage control mode, and output of 0.0% output.
      */
     public void stopAll() {
-        driveMotor.set(TalonFXControlMode.PercentOutput, 0.0);
-        rotationMotor.set(TalonFXControlMode.PercentOutput, 0.0);
+        driveMotor.set(0.0);
+        rotationMotor.set(0.0);
     }
 
     /**
