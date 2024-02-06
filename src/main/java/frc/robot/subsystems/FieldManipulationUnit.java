@@ -5,25 +5,20 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 
-import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ColorSensorV3;
-import com.revrobotics.MotorFeedbackSensor;
 
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Utils;
 
 
@@ -37,8 +32,8 @@ public class FieldManipulationUnit extends SubsystemBase {
   private CANSparkMax climb_motor;
   private TalonFX lead_arm_motor;
   private TalonFX follow_arm_motor;
-  private Encoder arm_position;
-  private boolean override_note_is_loaded = false;
+  private DutyCycleEncoder arm_position;
+  private boolean override_note_is_loaded;
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
@@ -62,11 +57,11 @@ public class FieldManipulationUnit extends SubsystemBase {
     follow_arm_motor = new TalonFX(Constants.FOLLOW_ARM_MOTOR);
     follow_arm_motor.setControl(new StaticBrake());
     follow_arm_motor.setControl(new Follower(Constants.LEAD_ARM_MOTOR, true));
-    arm_position = new Encoder(5, 6, false, EncodingType.k1X);
-    arm_position.setDistancePerPulse(1.0d);
-    arm_position.setMinRate(1.0d);
+    arm_position = new DutyCycleEncoder(5);
+    arm_position.setDistancePerRotation(1.0d);
 
     climb_motor = new CANSparkMax(Constants.CLIMB_MOTOR, MotorType.kBrushless);
+    override_note_is_loaded = false;
 
   }
 
@@ -82,7 +77,7 @@ public class FieldManipulationUnit extends SubsystemBase {
     // run intake slowly to push Note into shooter
     lead_intake_motor.set(Constants.MotorSpeeds.intakeBumpSpeed);
     override_note_is_loaded = true;
-    Timer.delay(Constants.Timings.resetColorSensorDelay);
+//    Timer.delay(Constants.Timings.resetColorSensorDelay);
     override_note_is_loaded = false;
   }
 
@@ -111,8 +106,8 @@ public class FieldManipulationUnit extends SubsystemBase {
     climb_motor.set(0);
   }
 
-  public int get_arm_position(){
-    return arm_position.get();
+  public double get_arm_position(){
+    return arm_position.getAbsolutePosition() * 360;
   }
 
   public boolean isFinished() {
@@ -149,14 +144,13 @@ public class FieldManipulationUnit extends SubsystemBase {
   
   @Override
   public void periodic() {
-    isNoteLoaded();
     // This method will be called once per scheduler run
     
-    // COMMENTED OUT UNTIL WE INSTALL THE COLOR SENSOR
-    // if (!override_note_is_loaded) {
-    //   if (isNoteLoaded()) {
-    //     stopIntake();;
-    //   }
-    // }
+    // COMMENT OUT TO DISABLE THE COLOR SENSOR
+    if (!override_note_is_loaded) {
+      if (isNoteLoaded()) {
+        stopIntake();;
+      }
+    }
   }
 }

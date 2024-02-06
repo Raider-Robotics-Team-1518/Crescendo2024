@@ -7,10 +7,12 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
-public class Arm extends Command {
-    private double power = Constants.MotorSpeeds.armPower;
-
-    public Arm() {
+public class MoveArmToAngle extends Command {
+    private double powerUp = Constants.MotorSpeeds.armPowerUp;
+    private double powerDn = Constants.MotorSpeeds.armPowerDn;
+    private double current_angle = RobotContainer.fmu.get_arm_position();
+    
+    public MoveArmToAngle(double set_angle) {
         addRequirements(RobotContainer.fmu);
     }
 
@@ -22,9 +24,8 @@ public class Arm extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        //RobotContainer.fmu.move_arm(power);
-        RobotContainer.fmu.move_arm(Robot.robotContainer.getDriverAxis(Axis.kRightY) * power);
-        SmartDashboard.putNumber("ARM ANGLE", RobotContainer.fmu.get_arm_position());
+        // Check value of shoulder encoder
+        // Move arm up or down to default speaker angle
 
     }
 

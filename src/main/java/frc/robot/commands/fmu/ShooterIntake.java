@@ -26,15 +26,26 @@ public class ShooterIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!RobotContainer.fmu.isNoteLoaded()) {
+    if (speed > 0 && !RobotContainer.fmu.isNoteLoaded()) {
       RobotContainer.fmu.setIntakeSpeed(speed);
     }
+    else if (speed < 0) {
+      RobotContainer.fmu.setIntakeSpeed(speed);
+
+    }
+    else {
+      RobotContainer.fmu.stopIntake();
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     RobotContainer.fmu.setIntakeSpeed(0);
+    if (!interrupted && RobotContainer.fmu.isNoteLoaded()) {
+      // TODO: move arm to optimal angle for speaker
+    }
   }
 
   // Returns true when the command should end.

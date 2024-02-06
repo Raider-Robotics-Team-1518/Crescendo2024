@@ -27,11 +27,15 @@ public class Shooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // back up to shoot
+    RobotContainer.fmu.setIntakeSpeed(-0.20d);
+    Timer.delay(0.05d);
     // spin the shooter motors to speed
     RobotContainer.fmu.setShooterSpeed(speed);
     // brief delay before bumping Note into shooter
     Timer.delay(Constants.Timings.bumpDelayInSeconds);
-    RobotContainer.fmu.setIntakeSpeed(Constants.MotorSpeeds.intakeBumpSpeed);
+    RobotContainer.fmu.bumpIntake();
+    // RobotContainer.fmu.setIntakeSpeed(Constants.MotorSpeeds.intakeBumpSpeed);
   }
 
   // Called once the command ends or is interrupted.

@@ -154,7 +154,7 @@ public final class Constants {
     public static final double ROBOT_COUNTER_SPIN_D = 0.001;
 
     /* Driver Scaling Constants */
-    public static final double DRIVER_SPEED_SCALE_LINEAR = 0.875;
+    public static final double DRIVER_SPEED_SCALE_LINEAR = 0.575;
     public static final double DRIVER_SPEED_SCALE_LINEAR_LATERAL = 0.375;
     public static final double DRIVER_SPEED_SCALE_ROTATIONAL = .75;
     public static final double DRIVE_SPEED_SCALE_FACTOR = 0.2; // scale down for "slow mode" (right stick)
@@ -191,17 +191,18 @@ public final class Constants {
 
     /* Robot operational parameters */
     public static final class MotorSpeeds {
-      public static final double intakeSpeed = 0.5d;
+      public static final double intakeSpeed = 0.35d;
       public static final double intakeBumpSpeed = 1.0d;
-      public static final double intakeReverse = -0.35d;
+      public static final double intakeReverse = -0.25d;
       public static final double shooterSpeedForSpeaker = 1.0d;
       public static final double shooterSpeedForAmp = -0.5d;
-      public static final double armPower = 0.50d;
+      public static final double armPowerUp = 0.50d;
+      public static final double armPowerDn = 0.35d;
       public static final double climbPower = 0.25d;
     }
     
     public static final class Timings {
-      public static final double bumpDelayInSeconds = 0.5d;
+      public static final double bumpDelayInSeconds = 0.25d;
       public static final double resetColorSensorDelay = 2.0d;
     }
 
@@ -209,7 +210,7 @@ public final class Constants {
       // For HSL, define the min & max of HUE that is orange
       // see https://hslpicker.com/#ff6a00
       public static final float orangeHueMin = 30.0f;
-      public static final float orageHueMax = 50.0f;
+      public static final float orageHueMax = 80.0f;
       // For RGB, see https://rgbcolorcode.com/color/FFAA00
       public static final double red = 0.568d;
       public static final double blue = 0.073d;

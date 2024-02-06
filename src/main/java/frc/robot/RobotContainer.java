@@ -23,7 +23,7 @@ import frc.robot.commands.drive.util.DriveAdjustModulesManually;
 import frc.robot.commands.drive.util.DriveResetAllModulePositionsToZero;
 import frc.robot.commands.drive.util.pid.DriveRotationExport;
 import frc.robot.commands.drive.util.pid.DriveTranslationExport;
-import frc.robot.commands.fmu.Arm;
+import frc.robot.commands.fmu.MoveArm;
 import frc.robot.commands.fmu.Climb;
 import frc.robot.commands.fmu.Shooter;
 import frc.robot.commands.fmu.ShooterIntake;
@@ -99,7 +99,7 @@ public class RobotContainer {
     swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
 
     fmu = new FieldManipulationUnit();
-    fmu.setDefaultCommand(new Arm());
+    fmu.setDefaultCommand(new MoveArm());
 
     configureSwerveSetup();
     configureSetupModes();
@@ -123,15 +123,15 @@ public class RobotContainer {
     driverStart.toggleOnTrue(new DriveRobotCentric(false));
     driverBack.toggleOnTrue(new DriveFieldRelative(false));
 
-    driverA.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
+    coDriverA.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
     // end() sets speed to 0, so we probably don't need an whileFalse() call
     // driverA.whileFalse(fmu.stop_intakeCommand());
 
-    driverY.whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker));
+    coDriverY.whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker));
     // end() sets speed to 0, so we probably don't need an whileFalse() call
     // driverY.whileFalse(fmu.stop_shooterCommand());
 
-    driverB.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
+    coDriverB.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
 
     driverDUp.whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
     driverDDown.whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));

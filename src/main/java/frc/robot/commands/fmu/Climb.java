@@ -5,7 +5,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class Climb extends Command {
-    private double power = Constants.MotorSpeeds.armPower;
+    private double power = Constants.MotorSpeeds.climbPower;
 
     public Climb(double power) {
         this.power = power;
