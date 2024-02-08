@@ -82,8 +82,8 @@ public class FieldManipulationUnit extends SubsystemBase {
   }
 
   public void setShooterSpeed(double speed) {
-    lead_shooter_motor.set(speed);
-    follow_shooter_motor.set(speed * 0.95d);
+    lead_shooter_motor.set(speed * 0.75d);
+    follow_shooter_motor.set(speed * 1.0d);
   }
 
   public void stop_shooterCommand() {

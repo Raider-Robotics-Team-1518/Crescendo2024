@@ -154,7 +154,7 @@ public final class Constants {
     public static final double ROBOT_COUNTER_SPIN_D = 0.001;
 
     /* Driver Scaling Constants */
-    public static final double DRIVER_SPEED_SCALE_LINEAR = 0.575;
+    public static final double DRIVER_SPEED_SCALE_LINEAR = 0.375;
     public static final double DRIVER_SPEED_SCALE_LINEAR_LATERAL = 0.375;
     public static final double DRIVER_SPEED_SCALE_ROTATIONAL = .75;
     public static final double DRIVE_SPEED_SCALE_FACTOR = 0.2; // scale down for "slow mode" (right stick)
@@ -191,7 +191,7 @@ public final class Constants {
 
     /* Robot operational parameters */
     public static final class MotorSpeeds {
-      public static final double intakeSpeed = 0.35d;
+      public static final double intakeSpeed = 0.45d;
       public static final double intakeBumpSpeed = 1.0d;
       public static final double intakeReverse = -0.25d;
       public static final double shooterSpeedForSpeaker = 1.0d;
