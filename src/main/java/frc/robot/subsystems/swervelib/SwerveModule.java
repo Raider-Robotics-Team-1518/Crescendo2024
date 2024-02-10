@@ -67,16 +67,16 @@ public class SwerveModule {
         driveMotor = new TalonFX(driveMotorID);
         TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration();
         // use the integrated sensor with the primary closed loop and timeout is 0.
-        driveMotorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+        driveMotorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
         driveMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         // Peak output of 40 amps
         driveMotorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 40;
         driveMotorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -40;
 
         // not sure if we need these, but I found them in an example
-        // driveMotorConfig.Feedback.SensorToMechanismRatio = 1.0;
-        // driveMotorConfig.Feedback.RotorToSensorRatio = 12.8;
-
+        driveMotorConfig.Feedback.SensorToMechanismRatio = 8.14;
+        //driveMotorConfig.Feedback.RotorToSensorRatio = 12.8;
+        driveMotorConfig.Audio.BeepOnConfig = false;
         // Need to figure out this setting, there's no direct equivalent in CTRE6
         // driveMotor.configSelectedFeedbackCoefficient(Constants.DRIVE_ENC_TO_METERS_FACTOR);//Constants.DRIVE_ENC_TO_METERS_FACTOR);
         // above uses configSelectedFeedbackCoefficient(), to scale the
@@ -108,7 +108,7 @@ public class SwerveModule {
 
 
         /* CONTRUCT AND SET UP CAN CODER */
-        rotateAbsSensor = new CANcoder(canCoderID, canBusName);
+        rotateAbsSensor = new CANcoder(canCoderID);
         var canCoderCfg = new CANcoderConfiguration();
         canCoderCfg.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         // canCoderCfg.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
@@ -127,12 +127,11 @@ public class SwerveModule {
         rotationMotor = new TalonFX(rotationMotorID);
         TalonFXConfiguration rotationMotorConfig = new TalonFXConfiguration();
         // use the integrated sensor with the primary closed loop and timeout is 0.
-        rotationMotorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
         rotationMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         // Peak output of 40 amps
         rotationMotorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 30;
         rotationMotorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -30;
-
+        rotationMotorConfig.Audio.BeepOnConfig = false;
         // Associate the cancoder with the rotation motor
         rotationMotorConfig.Feedback.FeedbackRemoteSensorID = rotateAbsSensor.getDeviceID();
         rotationMotorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
