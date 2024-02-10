@@ -189,6 +189,15 @@ public final class Constants {
     public static final int FOLLOW_ARM_MOTOR = 26;
     public static final int CLIMB_MOTOR = 27;
 
+    /* Magnetic Offsets for CANCoders on Swerve Modules 
+     * These have been configured in Phoenix TunerX for each CANCoder */
+    public static final class CANCoderOffsets {
+      public static final double FRONT_LEFT_OFFSET = -44.7d;
+      public static final double REAR_LEFT_OFFSET = -0.3d;
+      public static final double REAR_RIGHT_OFFSET = 62.1;
+      public static final double FRONT_RIGHT_OFFSET = -7.5d;
+    }
+
     /* Robot operational parameters */
     public static final class MotorSpeeds {
       public static final double intakeSpeed = 0.45d;

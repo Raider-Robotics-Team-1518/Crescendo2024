@@ -79,14 +79,14 @@ public class SwerveModule {
         driveMotor.configVoltageCompSaturation(Constants.MAXIMUM_VOLTAGE);
         setDriveMotorPIDF(Constants.SWERVE_DRIVE_P_VALUE, Constants.SWERVE_DRIVE_I_VALUE,
                           Constants.SWERVE_DRIVE_D_VALUE, Constants.SWERVE_DRIVE_FF_VALUE);
-        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 253);
-        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);//This is key to odometry must be around same as code loop
-        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 251);
-        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 241);
-        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 239);
-        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 233);
-        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 229);
-        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmwareApiStatus, 255);
+        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 300);
+        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 15);//This is key to odometry must be around same as code loop
+        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 300);
+        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 300);
+        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 300);
+        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 300);
+        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 300);
+        driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmwareApiStatus, 500);
         driveMotor.setSelectedSensorPosition(0.0);
 
         //contruct and setup rotation falcon
@@ -101,14 +101,14 @@ public class SwerveModule {
         rotationMotor.configVoltageCompSaturation(Constants.MAXIMUM_VOLTAGE);
         setRotationMotorPIDF(Constants.SWERVE_ROT_P_VALUE, Constants.SWERVE_ROT_I_VALUE,
                           Constants.SWERVE_ROT_D_VALUE, Constants.SWERVE_ROT_FF_VALUE);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 240);//This packet is the motor output, limit switches, faults, we care about none of those
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);//This is the sensor feedback, i.e. relative encoder
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 251);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 241);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 239);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 233);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 229);
-        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmwareApiStatus, 255);
+        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 300);//This packet is the motor output, limit switches, faults, we care about none of those
+        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 15);//This is the sensor feedback, i.e. relative encoder
+        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 300);
+        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 300);
+        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 300);
+        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 300);
+        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 300);
+        rotationMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmwareApiStatus, 500);
         rotationMotor.setSelectedSensorPosition(0.0);
         rotationMotor.configAllowableClosedloopError(0, Constants.SWERVE_MODULE_TOLERANCE, 0);
         

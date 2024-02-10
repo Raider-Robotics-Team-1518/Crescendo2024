@@ -60,7 +60,7 @@ public class FieldManipulationUnit extends SubsystemBase {
     arm_position = new DutyCycleEncoder(5);
     arm_position.setDistancePerRotation(1.0d);
 
-    climb_motor = new CANSparkMax(Constants.CLIMB_MOTOR, MotorType.kBrushless);
+    //climb_motor = new CANSparkMax(Constants.CLIMB_MOTOR, MotorType.kBrushless);
     override_note_is_loaded = false;
 
   }
@@ -82,7 +82,7 @@ public class FieldManipulationUnit extends SubsystemBase {
   }
 
   public void setShooterSpeed(double speed) {
-    lead_shooter_motor.set(speed * 0.75d);
+    lead_shooter_motor.set(speed * 0.85d);
     follow_shooter_motor.set(speed * 1.0d);
   }
 

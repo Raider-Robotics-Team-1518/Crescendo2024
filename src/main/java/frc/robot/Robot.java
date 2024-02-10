@@ -55,6 +55,11 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     SmartDashboard.putNumber("ARM ANGLE", RobotContainer.fmu.get_arm_position());
+    final double[] moduleAngles = RobotContainer.swerveDrive.getAllAbsModuleAngles();
+    SmartDashboard.putNumber("SwerveModules/FrntL-Angle", moduleAngles[0]);
+    SmartDashboard.putNumber("SwerveModules/RearL-Angle", moduleAngles[1]);
+    SmartDashboard.putNumber("SwerveModules/RearR-Angle", moduleAngles[2]);
+    SmartDashboard.putNumber("SwerveModules/FrntR-Angle", moduleAngles[3]);
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

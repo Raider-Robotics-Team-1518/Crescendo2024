@@ -109,7 +109,7 @@ public class RobotContainer {
     
     //NetworkTableInstance
     //NetworkTableInstance.getDefault().flush();
-    //CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture();
   }
 
   private void configureAutonomousEventMap() {
