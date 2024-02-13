@@ -16,11 +16,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.swervelib.SwerveModule;
@@ -119,6 +122,20 @@ public class SwerveDrive extends SubsystemBase {
     for (int i = 0; i < states.length; i++) {
         swerveModules[i].setModuleState(states[i], false);
     }
+  }
+
+  /*
+   * Get states used for kinematics/odometry/AutoBuilder
+   */
+  public SwerveModuleState[] getStates() {
+    SwerveModuleState[] states = new SwerveModuleState[4]; // 4 swerve drive modules
+    for (int i = 0; i < 4; i++) {
+      states[i] = swerveModules[i].getModuleState();
+    }
+    return states;
+  }
+  public ChassisSpeeds getChassisSpeeds() {
+    return driveKinematics.toChassisSpeeds(getStates());
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
@@ -277,6 +294,11 @@ public class SwerveDrive extends SubsystemBase {
   public void resetPose() {
     driveOdometry.resetPosition(getGyroRotation2d(), getSwerveModulePositions(), getCurPose2d());
   }
+
+  public void resetOdometry(Pose2d initialHolonomicPose) {
+    driveOdometry.resetPosition(initialHolonomicPose.getRotation(), getSwerveModulePositions(), getCurPose2d());
+  }
+
 
   public void resetPoseAprilTags() {
 
@@ -527,6 +549,27 @@ public class SwerveDrive extends SubsystemBase {
   public double getCounterRotationPIDOut(double target){
     double currentGyroPos = getGyroInRad();
     return robotCounterSpinController.calculate(currentGyroPos, target);
+  }
+
+  public void setupPathPlanner() {
+    AutoBuilder.configureHolonomic(
+      this::getCurPose2d, 
+      this::resetOdometry, 
+      this::getChassisSpeeds, 
+      this::setChassisSpeeds, 
+      new HolonomicPathFollowerConfig(
+        Constants.AutoConstants.TRANSLATION_PID,
+        Constants.AutoConstants.ANGLE_PID,
+        4.5, // max module speed in m/s
+        Constants.DRIVE_BASE_RADIUS, // in meters from center to furthest module
+        new ReplanningConfig()
+      ), 
+      // Boolean supplier that controls when the path will be mirrored for red alliance
+      () -> {
+        var alliance = DriverStation.getAlliance();
+        return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+      }
+      , this);
   }
 
 }
