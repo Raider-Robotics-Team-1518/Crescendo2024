@@ -11,9 +11,11 @@ public class MoveArmToAngle extends Command {
     private double powerUp = Constants.MotorSpeeds.armPowerUp;
     private double powerDn = Constants.MotorSpeeds.armPowerDn;
     private double current_angle = RobotContainer.fmu.get_arm_position();
+    private double set_angle = current_angle;
     
     public MoveArmToAngle(double set_angle) {
         addRequirements(RobotContainer.fmu);
+        this.set_angle = set_angle;
     }
 
     // Called when the command is initially scheduled.
@@ -25,8 +27,14 @@ public class MoveArmToAngle extends Command {
     @Override
     public void execute() {
         // Check value of shoulder encoder
+        current_angle = RobotContainer.fmu.get_arm_position();
         // Move arm up or down to default speaker angle
-
+        if (Math.abs(this.set_angle - current_angle) > 0.15) {
+            double sign = Math.signum(this.set_angle - current_angle);
+            RobotContainer.fmu.move_arm(sign * powerUp);
+        } else {
+            RobotContainer.fmu.move_arm(0);
+        }
     }
 
     // Called once the command ends or is interrupted.

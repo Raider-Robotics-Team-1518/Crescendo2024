@@ -226,7 +226,7 @@ public final class Constants {
   }
 
   public static final class Timings {
-    public static final double bumpDelayInSeconds = 0.25d;
+    public static final double bumpDelayInSeconds = 0.75d;
     public static final double resetColorSensorDelay = 2.0d;
   }
 

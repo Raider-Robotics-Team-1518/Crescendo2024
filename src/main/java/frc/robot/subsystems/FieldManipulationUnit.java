@@ -4,11 +4,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 
 import com.ctre.phoenix6.controls.Follower;
@@ -25,8 +25,10 @@ import frc.robot.Utils;
 
 public class FieldManipulationUnit extends SubsystemBase {
   /** Creates a new Shooter. */
-  private CANSparkMax lead_shooter_motor;
-  private CANSparkMax follow_shooter_motor;
+  // private CANSparkMax lead_shooter_motor;
+  // private CANSparkMax follow_shooter_motor;
+  private TalonFX lead_shooter_motor;
+  private TalonFX follow_shooter_motor;
   private CANSparkMax lead_intake_motor;
   private CANSparkMax follow_intake_motor;
   private CANSparkMax climb_motor;
@@ -39,12 +41,14 @@ public class FieldManipulationUnit extends SubsystemBase {
 
 
   public FieldManipulationUnit () {
-    lead_shooter_motor = new CANSparkMax(Constants.LEAD_SHOOTER_MOTOR, MotorType.kBrushless);
+    lead_shooter_motor = new TalonFX(Constants.LEAD_SHOOTER_MOTOR); // new CANSparkMax(Constants.LEAD_SHOOTER_MOTOR, MotorType.kBrushless);
     lead_shooter_motor.setInverted(true);
-    lead_shooter_motor.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    follow_shooter_motor = new CANSparkMax(Constants.FOLLOW_SHOOTER_MOTOR, MotorType.kBrushless);
+    // lead_shooter_motor.setControl(new CoastOut());
+    // lead_shooter_motor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    follow_shooter_motor = new TalonFX(Constants.FOLLOW_SHOOTER_MOTOR); // new CANSparkMax(Constants.FOLLOW_SHOOTER_MOTOR, MotorType.kBrushless);
     follow_shooter_motor.setInverted(true);
-    follow_shooter_motor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    // follow_shooter_motor.setControl(new CoastOut());
+    // follow_shooter_motor.setIdleMode(CANSparkMax.IdleMode.kCoast);
     //follow_shooter_motor.follow(lead_shooter_motor); // Removed to set differential speeds
 
     lead_intake_motor = new CANSparkMax(Constants.LEAD_INTAKE_MOTOR, MotorType.kBrushless);
@@ -76,6 +80,8 @@ public class FieldManipulationUnit extends SubsystemBase {
   public void bumpIntake() {
     // run intake slowly to push Note into shooter
     lead_intake_motor.set(Constants.MotorSpeeds.intakeBumpSpeed);
+    Timer.delay(0.5d);
+    lead_intake_motor.set(0);
     override_note_is_loaded = true;
 //    Timer.delay(Constants.Timings.resetColorSensorDelay);
     override_note_is_loaded = false;
@@ -149,7 +155,7 @@ public class FieldManipulationUnit extends SubsystemBase {
     // COMMENT OUT TO DISABLE THE COLOR SENSOR
     if (!override_note_is_loaded) {
       if (isNoteLoaded()) {
-        stopIntake();;
+        stopIntake();
       }
     }
   }

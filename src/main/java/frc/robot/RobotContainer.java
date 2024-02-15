@@ -127,7 +127,7 @@ public class RobotContainer {
     // end() sets speed to 0, so we probably don't need an whileFalse() call
     // driverA.whileFalse(fmu.stop_intakeCommand());
 
-    coDriverY.whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker));
+    coDriverY.debounce(0.25d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.whileFalse(new Shooter(0));
     // end() sets speed to 0, so we probably don't need an whileFalse() call
     // driverY.whileFalse(fmu.stop_shooterCommand());
 
