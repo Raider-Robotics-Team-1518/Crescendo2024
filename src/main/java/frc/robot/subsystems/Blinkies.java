@@ -38,7 +38,6 @@ public class Blinkies extends SubsystemBase {
     int fID = (int) llHelpers.getFiducialID("limelight");
     SmartDashboard.putNumber("tx", llAprilTag.tx);
     SmartDashboard.putNumber("fID", fID);
-    SmartDashboard.putNumber("Distance", limelight.getDistanceToTarget(fID));
 
     if (RobotState.isDisabled()) {
       setLEDState(LEDState.DEFAULT);
@@ -48,44 +47,44 @@ public class Blinkies extends SubsystemBase {
       int targetSourceAprilTag = 0;
       Optional<Alliance> allianceColorOpt = DriverStation.getAlliance();
       if (allianceColorOpt.isPresent()) {
-        String allianceColor = allianceColorOpt.get().toString().toLowerCase();
-        switch (allianceColor) {
-          case "blue":
-            targetSpeakerAprilTag = Constants.AprilTagIds.blueSpeakerLeft;
-            targetAmpAprilTag = Constants.AprilTagIds.blueAmp;
-            targetSourceAprilTag = Constants.AprilTagIds.blueSourceLeft;
-            setLEDState(LEDState.BLUE);
-            break;
-          case "red":
+        Alliance allianceColor = allianceColorOpt.get();
+        if (allianceColor == Alliance.Red) {
             targetSpeakerAprilTag = Constants.AprilTagIds.redSpeakerLeft;
             targetAmpAprilTag = Constants.AprilTagIds.redAmp;
             targetSourceAprilTag = Constants.AprilTagIds.redSourceLeft;
             setLEDState(LEDState.RED);
-            break;
+        } else if (allianceColor == Alliance.Blue) {
+          targetSpeakerAprilTag = Constants.AprilTagIds.blueSpeakerLeft;
+          targetAmpAprilTag = Constants.AprilTagIds.blueAmp;
+          targetSourceAprilTag = Constants.AprilTagIds.blueSourceLeft;
+          setLEDState(LEDState.BLUE);
         }
-        SmartDashboard.putString("alliance color", allianceColor);
+
+        SmartDashboard.putString("alliance color", allianceColor.toString());
         SmartDashboard.putNumber("targetSpeakerTag", targetSpeakerAprilTag);
         if (fID > 0) {
           double distance = limelight.getDistanceToTarget(fID);
+          SmartDashboard.putNumber("Distance", distance);
+
           if (distance > 0) {
             if (fID == targetSpeakerAprilTag && distance < Constants.FieldPositions.maxDistanceToSpeaker) {
               setLEDState(LEDState.GREEN);
-              SmartDashboard.putString("LED Color", "green");
+              // SmartDashboard.putString("LED Color", "green");
             } else if (fID == targetAmpAprilTag && distance < Constants.FieldPositions.maxDistanceToAmp) {
               setLEDState(LEDState.PURPLE);
-              SmartDashboard.putString("LED Color", "purple");
+              // SmartDashboard.putString("LED Color", "purple");
             } else if (fID == targetSourceAprilTag && distance < Constants.FieldPositions.maxDistanceToSource) {
               setLEDState(LEDState.YELLOW);
-              SmartDashboard.putString("LED Color", "yellow");
+              // SmartDashboard.putString("LED Color", "yellow");
             } else {
-              SmartDashboard.putString("LED Color", "black");
+              // SmartDashboard.putString("LED Color", "black");
             }
 
-          } else {
-            SmartDashboard.putString("LED Color", "white");
+          // } else {
+            // SmartDashboard.putString("LED Color", "white");
           }
-        } else {
-          SmartDashboard.putString("LED Color", "pink");
+        // } else {
+          // SmartDashboard.putString("LED Color", "pink");
         }
       }
 

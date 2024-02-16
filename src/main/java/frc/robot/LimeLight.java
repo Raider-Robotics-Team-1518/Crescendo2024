@@ -76,7 +76,7 @@ public class LimeLight {
    */
   public double getDistanceToTarget(int aprilTagId) {
     double angleToGoalDegrees = Constants.FieldPositions.limelightMountingAngle + getTargetOffsetVertical();
-    double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+    double angleToGoalRadians = angleToGoalDegrees * 0.01745327778; // (3.14159 / 180.0);
 
     double goalHeightInches = 0;
     switch (aprilTagId) {

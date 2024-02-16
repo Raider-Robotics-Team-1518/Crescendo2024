@@ -771,9 +771,9 @@ public class LimelightHelpers {
         long end = System.nanoTime();
         double millis = (end - start) * .000001;
         results.targetingResults.latency_jsonParse = millis;
-        if (profileJSON) {
-            System.out.printf("lljson: %.2f\r\n", millis);
-        }
+        // if (profileJSON) {
+        //     System.out.printf("lljson: %.2f\r\n", millis);
+        // }
 
         return results;
     }

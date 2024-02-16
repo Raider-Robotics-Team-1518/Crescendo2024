@@ -52,7 +52,7 @@ public class DriveTranslationExport extends Command {
         try{
             writer.close();
         } catch(Exception exception) {
-            System.out.println("DriveTranslationExport: Error closing BufferedWriter object");
+            // System.out.println("DriveTranslationExport: Error closing BufferedWriter object");
             exception.printStackTrace();
         }
         RobotContainer.swerveDrive.stopAllModules();
@@ -70,7 +70,7 @@ public class DriveTranslationExport extends Command {
             RobotContainer.swerveDrive.simpleDriveControlPercent(inputSpeed);
         } else if(isInTimeRange(2, 4)) {
             inputSpeed = driveFactorOne;
-            System.out.println(inputSpeed);
+            // System.out.println(inputSpeed);
             RobotContainer.swerveDrive.simpleDriveControlPercent(inputSpeed);
         } else if(isInTimeRange(4, 6)) {
             inputSpeed = 0.0d;
@@ -123,7 +123,7 @@ public class DriveTranslationExport extends Command {
         try{
             writer.append(String.valueOf(bd.doubleValue()) + "," + String.valueOf(input) + "," + String.valueOf(xOut) + "\n");
         } catch(Exception exception) {
-            System.out.println("DriveTranslationExport: Error writing motion data");
+            // System.out.println("DriveTranslationExport: Error writing motion data");
             exception.printStackTrace();
         }
     }
@@ -132,21 +132,21 @@ public class DriveTranslationExport extends Command {
         try { 
             new File(swerveDumpFolder).mkdir();
         } catch(Exception e){
-            System.out.println("DriveTranslationExport: Error creating directory");
+            // System.out.println("DriveTranslationExport: Error creating directory");
             this.end(true);
             e.printStackTrace();
         }
         try { 
             new File(swerveDumpFile).createNewFile();
         } catch(Exception e){
-            System.out.println("DriveTranslationExport: Error creating file");
+            // System.out.println("DriveTranslationExport: Error creating file");
             this.end(true);
             e.printStackTrace();
         }
         try{
             writer = new BufferedWriter(new FileWriter(swerveDumpFile));
         } catch(Exception e){ 
-            System.out.println("DriveTranslationExport: Error initializing BufferedWriter");
+            // System.out.println("DriveTranslationExport: Error initializing BufferedWriter");
             this.end(true);
             e.printStackTrace();
         }
@@ -154,7 +154,7 @@ public class DriveTranslationExport extends Command {
             writer.append("Time,Input,Output");
             writer.newLine();
         } catch(Exception e){
-            System.out.println("DriveTranslationExport: Error Writing CSV Header");
+            // System.out.println("DriveTranslationExport: Error Writing CSV Header");
             this.end(true);
             e.printStackTrace();
         }

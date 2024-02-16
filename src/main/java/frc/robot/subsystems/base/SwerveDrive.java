@@ -255,10 +255,10 @@ public class SwerveDrive extends SubsystemBase {
   public void driveOneModule(int moduleNumber,double moveSpeed, double rotatePos, boolean isVeloMode){
     //test that moduleNumber is between 0-3, return if not(return;)
     if (moduleNumber > 3 && moduleNumber < 0){
-      System.out.println("Module " + moduleNumber + " is out of bounds.");
+      // System.out.println("Module " + moduleNumber + " is out of bounds.");
       return;
     }else if(rotatePos < -Math.PI || rotatePos > Math.PI){
-      System.out.println("Input angle out of range.");
+      // System.out.println("Input angle out of range.");
       return;
     }
 

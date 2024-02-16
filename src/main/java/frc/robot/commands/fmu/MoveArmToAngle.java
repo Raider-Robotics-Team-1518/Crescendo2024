@@ -1,15 +1,12 @@
 package frc.robot.commands.fmu;
 
-import edu.wpi.first.wpilibj.XboxController.Axis;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class MoveArmToAngle extends Command {
     private double powerUp = Constants.MotorSpeeds.armPowerUp;
-    private double powerDn = Constants.MotorSpeeds.armPowerDn;
+    // private double powerDn = Constants.MotorSpeeds.armPowerDn;
     private double current_angle = RobotContainer.fmu.get_arm_position();
     private double set_angle = current_angle;
     

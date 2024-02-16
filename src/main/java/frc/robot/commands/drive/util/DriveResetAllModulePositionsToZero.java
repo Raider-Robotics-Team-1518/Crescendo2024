@@ -47,10 +47,10 @@ public class DriveResetAllModulePositionsToZero extends Command {
     if(!interrupted && DriverStation.isDisabled()){
       RobotContainer.swerveDrive.zeroAllModulePosSensors();
     }else if(interrupted){
-      System.out.println("WARNING: RESET COMMAND INTERRUPTED - RESET FAILED");
+      // System.out.println("WARNING: RESET COMMAND INTERRUPTED - RESET FAILED");
       DriverStation.reportWarning("WARNING: RESET COMMAND INTERRUPTED - RESET FAILED",false);
     }else if(!DriverStation.isDisabled()){
-      System.out.println("WARNING: ROBOT NOT DISABLED (DISABLE ROBOT!) - RESET FAILED");
+      // System.out.println("WARNING: ROBOT NOT DISABLED (DISABLE ROBOT!) - RESET FAILED");
       DriverStation.reportWarning("WARNING: ROBOT NOT DISABLED (DISABLE ROBOT!) - RESET FAILED",false);
     }
   }

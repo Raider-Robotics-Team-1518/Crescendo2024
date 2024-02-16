@@ -53,7 +53,7 @@ public class DriveRotationExport extends Command {
         try{
             writer.close();
         } catch(Exception exception) {
-            System.out.println("DriveRotationExport: Error closing BufferedWriter object");
+            // System.out.println("DriveRotationExport: Error closing BufferedWriter object");
             exception.printStackTrace();
         }
         RobotContainer.swerveDrive.stopAllModules();
@@ -126,7 +126,7 @@ public class DriveRotationExport extends Command {
         try{
             writer.append(String.valueOf(bd.doubleValue()) + "," + String.valueOf(input) + "," + String.valueOf(rotOut) + "\n");
         } catch(Exception exception) {
-            System.out.println("DriveRotationExport: Error writing motion data");
+            // System.out.println("DriveRotationExport: Error writing motion data");
             exception.printStackTrace();
         }
     }
@@ -135,21 +135,21 @@ public class DriveRotationExport extends Command {
         try { 
             new File(swerveDumpFolder).mkdir();
         } catch(Exception e){
-            System.out.println("DriveRotationExport: Error creating directory");
+            // System.out.println("DriveRotationExport: Error creating directory");
             this.end(true);
             e.printStackTrace();
         }
         try { 
             new File(swerveDumpFile).createNewFile();
         } catch(Exception e){
-            System.out.println("DriveRotationExport: Error creating file");
+            // System.out.println("DriveRotationExport: Error creating file");
             this.end(true);
             e.printStackTrace();
         }
         try{
             writer = new BufferedWriter(new FileWriter(swerveDumpFile));
         } catch(Exception e){ 
-            System.out.println("DriveRotationExport: Error initializing BufferedWriter");
+            // System.out.println("DriveRotationExport: Error initializing BufferedWriter");
             this.end(true);
             e.printStackTrace();
         }
@@ -157,7 +157,7 @@ public class DriveRotationExport extends Command {
             writer.append("Time,Input,Output");
             writer.newLine();
         } catch(Exception e){
-            System.out.println("DriveRotationExport: Error Writing CSV Header");
+            // System.out.println("DriveRotationExport: Error Writing CSV Header");
             this.end(true);
             e.printStackTrace();
         }
