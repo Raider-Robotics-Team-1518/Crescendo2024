@@ -5,6 +5,9 @@
 package frc.robot;
 
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
@@ -95,6 +98,7 @@ public class RobotContainer {
   public static Blinkies m_blinkies = new Blinkies();
 
   public RobotContainer() {
+
     swerveDrive = new SwerveDrive();
     swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
 
@@ -110,10 +114,16 @@ public class RobotContainer {
     //NetworkTableInstance
     //NetworkTableInstance.getDefault().flush();
     CameraServer.startAutomaticCapture();
+
   }
 
   private void configureAutonomousEventMap() {
-    // Constants.autonomousEventMap.put("intake", AutoCommandGroups.intakeItem());
+    // Auto mode - Register Named Commands
+    // NamedCommands.registerCommand("AutoIntake", swerve.autoBalanceCommand());
+    // NamedCommands.registerCommand("AutoShootSpeaker", swerve.autoBalanceCommand());
+    // NamedCommands.registerCommand("AutoAimArm", swerve.autoBalanceCommand());
+    // NamedCommands.registerCommand("AutoStopIntake", swerve.autoBalanceCommand());
+
   }
 
 
@@ -124,12 +134,8 @@ public class RobotContainer {
     driverBack.toggleOnTrue(new DriveFieldRelative(false));
 
     coDriverA.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
-    // end() sets speed to 0, so we probably don't need an whileFalse() call
-    // driverA.whileFalse(fmu.stop_intakeCommand());
 
-    coDriverY.debounce(0.25d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.whileFalse(new Shooter(0));
-    // end() sets speed to 0, so we probably don't need an whileFalse() call
-    // driverY.whileFalse(fmu.stop_shooterCommand());
+    coDriverY.debounce(0.1d).onTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.onFalse(new Shooter(0));
 
     coDriverB.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
 
@@ -148,10 +154,9 @@ public class RobotContainer {
    * They will appear in the order entered
    */
   private void configureAutoModes() {
-    
-    //autoChooser.setDefaultOption("Wait 1 sec(do nothing)", new WaitCommand(1));
-
-    //SmartDashboard.putData(RobotContainer.autoChooser);
+    // Build an auto chooser. This will use Commands.none() as the default option.
+    // autoChooser = AutoBuilder.buildAutoChooser();
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   private void configureSwerveSetup() {
@@ -170,6 +175,9 @@ public class RobotContainer {
 
   }
 
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
+  }
   
   /**
    * A method to return the value of a driver joystick axis,
