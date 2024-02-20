@@ -17,8 +17,7 @@ public class MoveArmToAngle extends Command {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {
-    }
+    public void initialize() {}
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
@@ -26,7 +25,7 @@ public class MoveArmToAngle extends Command {
         // Check value of shoulder encoder
         current_angle = RobotContainer.fmu.get_arm_position();
         // Move arm up or down to default speaker angle
-        if (Math.abs(this.set_angle - current_angle) > 0.15) {
+        if (Math.abs(this.set_angle - current_angle) > Constants.Tolerances.armAimingTolerance) {
             double sign = Math.signum(this.set_angle - current_angle);
             RobotContainer.fmu.move_arm(sign * powerUp);
         } else {

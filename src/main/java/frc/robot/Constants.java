@@ -71,7 +71,7 @@ public final class Constants {
    * Greater Rochester Robotics
    */
   /* Factors of PI */
-  public static final double PI_OVER_TWO = Math.PI / 2;
+  public static final double PI_OVER_TWO = Math.PI * 0.5;
   public static final double THREE_PI_OVER_TWO = 3 * PI_OVER_TWO;
   public static final double TWO_PI = 2 * Math.PI;
   public static final Rotation2d ROTATE_BY_PI = Rotation2d.fromDegrees(180);
@@ -175,6 +175,10 @@ public final class Constants {
 
   /* IDENTIFICATION NUMBERS FOR DEVICES */
 
+  public static final int DRIVER_CONTROLLER_PORT = 0;
+  public static final int CODRIVER_CONTROLLER_PORT = 1;
+  
+
   /* CTRE motor and sensors */
 
   public static final int FRONT_LEFT_MOVE_MOTOR = 1;// drive module 0
@@ -217,7 +221,7 @@ public final class Constants {
   public static final class MotorSpeeds {
     public static final double intakeSpeed = 0.45d;
     public static final double intakeBumpSpeed = 1.0d;
-    public static final double intakeReverse = -0.25d;
+    public static final double intakeReverse = -0.20d;
     public static final double shooterSpeedForSpeaker = 1.0d;
     public static final double shooterSpeedForAmp = -0.5d;
     public static final double armPowerUp = 0.50d;
@@ -226,7 +230,8 @@ public final class Constants {
   }
 
   public static final class Timings {
-    public static final double bumpDelayInSeconds = 0.75d;
+    public static final double driveIntakeBackwardInSeconds = 0.05d;
+    public static final double bumpDelayInSeconds = 0.50d;
     public static final double resetColorSensorDelay = 2.0d;
   }
 
@@ -266,7 +271,7 @@ public final class Constants {
     // inches, distance from the center of the Limelight lens to the floor
     public static final double limelightMountingHeight = 8;
     // degrees, measured from vertical, with tilted up being positive
-    public static final double limelightMountingAngle = 21;
+    public static final double limelightMountingAngle = 25;
     // inches
     public static final double speakerTagHeight = 54.675; // 53.88;
     // inches
@@ -281,6 +286,10 @@ public final class Constants {
     public static final double maxDistanceToAmp = 100;
     // inches
     public static final double maxDistanceToSource = 100;
+  }
+
+  public static final class Tolerances {
+    public static final double armAimingTolerance = 0.10d; // angle, how close to the desired angle do we have to be
   }
 
   /* Solenoid Channels */

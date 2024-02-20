@@ -17,9 +17,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.auto.AutoAimArm;
+import frc.robot.commands.auto.AutoIntake;
+import frc.robot.commands.auto.AutoShootSpeaker;
+import frc.robot.commands.auto.AutoStopIntake;
 import frc.robot.commands.drive.DriveFieldRelative;
 import frc.robot.commands.drive.DriveRobotCentric;
 import frc.robot.commands.drive.util.DriveAdjustModulesManually;
@@ -43,48 +48,14 @@ import frc.robot.subsystems.base.SwerveDrive;
 public class RobotContainer {
   // The robot's gamepads are defined here...
   
-  static final XboxController driver = new XboxController(0);
-  static final XboxController coDriver = new XboxController(1);
-
-  ////////////////////
-  // DRIVER BUTTONS //
-  ////////////////////
-
-  static final Trigger driverA = new JoystickButton(driver, 1);
-  static final Trigger driverB = new JoystickButton(driver, 2);
-  static final Trigger driverX = new JoystickButton(driver, 3);
-  static final Trigger driverY = new JoystickButton(driver, 4);
-  static final Trigger driverLB = new JoystickButton(driver, 5);
-  static final Trigger driverRB = new JoystickButton(driver, 6);
-  static final Trigger driverBack = new JoystickButton(driver, 7);
-  static final Trigger driverStart = new JoystickButton(driver, 8);
-  static final Trigger driverLS = new JoystickButton(driver, 9);
-  static final Trigger driverRS = new JoystickButton(driver, 10);
-  static final Trigger driverDUp = new POVButton(driver, 0);
-  static final Trigger driverDDown = new POVButton(driver, 180);
-  static final Trigger driverDLeft = new POVButton(driver, 270);
-  static final Trigger driverDRight = new POVButton(driver, 90);
+  static final CommandXboxController driver = new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
+  static final CommandXboxController codriver = new CommandXboxController(Constants.CODRIVER_CONTROLLER_PORT);
   
-
-  ///////////////////////
-  // CO-DRIVER BUTTONS //
-  ///////////////////////
-
-  static final Trigger coDriverA = new JoystickButton(coDriver, 1);
-  static final Trigger coDriverB = new JoystickButton(coDriver, 2);
-  static final Trigger coDriverX = new JoystickButton(coDriver, 3);
-  static final Trigger coDriverY = new JoystickButton(coDriver, 4);
-  static final Trigger coDriverLB = new JoystickButton(coDriver, 5);
-  static final Trigger coDriverRB = new JoystickButton(coDriver, 6);
-  static final Trigger coDriverBack = new JoystickButton(coDriver, 7);
-  static final Trigger coDriverStart = new JoystickButton(coDriver, 8);
-  static final Trigger coDriverLS = new JoystickButton(coDriver, 9);
-  static final Trigger coDriverRS = new JoystickButton(coDriver, 10);
-  static final Trigger coDriverDUp = new POVButton(coDriver, 0);
-  static final Trigger coDriverDDown = new POVButton(coDriver, 180);
-  static final Trigger coDriverDLeft = new POVButton(coDriver, 270);
-  static final Trigger coDriverDRight = new POVButton(coDriver, 90);
-
+/*
+ * DRIVER BUTTONS are accessed like this:
+ *  driver.a().onTrue(...) // accesses the A button on the driver controller
+ *  codriver.y().whileTrue(...) // accesses the Y button on the co-driver controller
+ */
 
   //The robot's subsystems are instantiated here
   //public static SwerveDrive swerveDrive;
@@ -99,6 +70,12 @@ public class RobotContainer {
 
   public RobotContainer() {
 
+    // Auto mode - Register Named Commands - needs to be at top of class
+    NamedCommands.registerCommand("AutoIntake", new AutoIntake());
+    NamedCommands.registerCommand("AutoShootSpeaker", new AutoShootSpeaker());
+    NamedCommands.registerCommand("AutoAimArm", new AutoAimArm());
+    NamedCommands.registerCommand("AutoStopIntake", new AutoStopIntake());
+
     swerveDrive = new SwerveDrive();
     swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
 
@@ -109,7 +86,6 @@ public class RobotContainer {
     configureSetupModes();
     configureAutoModes();
     configureButtonBindings();
-    configureAutonomousEventMap();
     
     //NetworkTableInstance
     //NetworkTableInstance.getDefault().flush();
@@ -117,30 +93,20 @@ public class RobotContainer {
 
   }
 
-  private void configureAutonomousEventMap() {
-    // Auto mode - Register Named Commands
-    // NamedCommands.registerCommand("AutoIntake", swerve.autoBalanceCommand());
-    // NamedCommands.registerCommand("AutoShootSpeaker", swerve.autoBalanceCommand());
-    // NamedCommands.registerCommand("AutoAimArm", swerve.autoBalanceCommand());
-    // NamedCommands.registerCommand("AutoStopIntake", swerve.autoBalanceCommand());
-
-  }
-
-
   private void configureButtonBindings() {
     /* ==================== DRIVER BUTTONS ==================== */
 
-    driverStart.toggleOnTrue(new DriveRobotCentric(false));
-    driverBack.toggleOnTrue(new DriveFieldRelative(false));
+    driver.start().toggleOnTrue(new DriveRobotCentric(false));
+    driver.back().toggleOnTrue(new DriveFieldRelative(false));
 
-    coDriverA.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
+    codriver.a().whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
 
-    coDriverY.debounce(0.1d).onTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.onFalse(new Shooter(0));
+    codriver.y().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.onFalse(new Shooter(0));
 
-    coDriverB.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
+    codriver.b().whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
 
-    driverDUp.whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
-    driverDDown.whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));
+    driver.povUp().whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
+    driver.povDown().whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));
 
     /* =================== CODRIVER BUTTONS =================== */
 
@@ -200,8 +166,8 @@ public class RobotContainer {
    * @param rightRumble
    */
   public static void setDriverRumble(double leftRumble, double rightRumble) {
-    driver.setRumble(RumbleType.kLeftRumble, leftRumble);
-    driver.setRumble(RumbleType.kRightRumble, rightRumble);
+    driver.getHID().setRumble(RumbleType.kLeftRumble, leftRumble);
+    driver.getHID().setRumble(RumbleType.kRightRumble, rightRumble);
   }
 
   /**
@@ -220,7 +186,7 @@ public class RobotContainer {
    * @return
    */
   public int getDriverDPad() {
-    return (driver.getPOV());
+    return (driver.getHID().getPOV());
   }
 
   /**
@@ -232,8 +198,8 @@ public class RobotContainer {
    * @return
    */
   public double getCoDriverAxis(Axis axis) {
-    return (coDriver.getRawAxis(axis.value) < -.1 || coDriver.getRawAxis(axis.value) > .1)
-        ? coDriver.getRawAxis(axis.value)
+    return (codriver.getHID().getRawAxis(axis.value) < -.1 || codriver.getHID().getRawAxis(axis.value) > .1)
+        ? codriver.getHID().getRawAxis(axis.value)
         : 0;
   }
 
@@ -244,8 +210,8 @@ public class RobotContainer {
    * @param rightRumble
    */
   public static void setCoDriverRumble(double leftRumble, double rightRumble) {
-    coDriver.setRumble(RumbleType.kLeftRumble, leftRumble);
-    coDriver.setRumble(RumbleType.kRightRumble, rightRumble);
+    codriver.getHID().setRumble(RumbleType.kLeftRumble, leftRumble);
+    codriver.getHID().setRumble(RumbleType.kRightRumble, rightRumble);
   }
 
   /**
@@ -255,7 +221,7 @@ public class RobotContainer {
    * @return the value of the button
    */
   public boolean getCoDriverButton(int buttonNum) {
-    return coDriver.getRawButton(buttonNum);
+    return codriver.getHID().getRawButton(buttonNum);
   }
 
 }

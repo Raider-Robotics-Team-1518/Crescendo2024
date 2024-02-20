@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    // robotContainer.swerveDrive.resetGyro();   // gives warning about accessing a static
     RobotContainer.swerveDrive.resetGyro();
     autonomousCommand = RobotContainer.autoChooser.getSelected();
     if (autonomousCommand != null) {
