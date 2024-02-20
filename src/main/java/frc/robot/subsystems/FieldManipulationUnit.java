@@ -128,7 +128,7 @@ public class FieldManipulationUnit extends SubsystemBase {
 
     // calculate with Hue Saturation Value (HSV)
     float hue = Utils.getHue((float)r, (float)g, (float)b);
-    SmartDashboard.putNumber("Hue", (double)hue);
+    // SmartDashboard.putNumber("Hue", (double)hue);
 
     if (hue > Constants.ColorValues.orangeHueMin && hue < Constants.ColorValues.orageHueMax) {
       SmartDashboard.putBoolean("Note Loaded", true);

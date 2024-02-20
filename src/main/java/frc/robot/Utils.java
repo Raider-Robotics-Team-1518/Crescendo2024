@@ -27,19 +27,19 @@ public class Utils {
         // Calculate the Hue
 
         float h = 0;
-
+        float diff = max - min;
         if (max == min)
             h = 0;
         else if (max == r)
-            h = ((60 * (g - b) / (max - min)) + 360) % 360;
+            h = ((60 * (g - b) / diff) + 360) % 360;
         else if (max == g)
-            h = (60 * (b - r) / (max - min)) + 120;
+            h = (60 * (b - r) / diff) + 120;
         else if (max == b)
-            h = (60 * (r - g) / (max - min)) + 240;
+            h = (60 * (r - g) / diff) + 240;
 
         // Calculate the Luminance
 
-        float l = (max + min) / 2;
+        float l = (max + min) * 0.5f;
 
         // Calculate the Saturation
 
@@ -48,9 +48,9 @@ public class Utils {
         if (max == min)
             s = 0;
         else if (l <= .5f)
-            s = (max - min) / (max + min);
+            s = diff / (max + min);
         else
-            s = (max - min) / (2 - max - min);
+            s = diff / (2 - diff);
 
         return new float[] { h, s * 100, l * 100 };
     }
