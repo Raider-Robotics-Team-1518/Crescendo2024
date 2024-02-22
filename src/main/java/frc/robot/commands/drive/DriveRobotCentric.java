@@ -46,10 +46,11 @@ public class DriveRobotCentric extends Command {
     RobotContainer.swerveDrive.isFieldRelative = false;
     //RobotContainer.setDriverRumble(0.25, 0.25);
     //pull primary stick values, and put to awaySpeed and lateralSpeed doubles
-    double forwardSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftY), 3);
-    // forwardSpeed *= 0.5;
-    double strafeSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftX), 3);
-    // strafeSpeed *= 0.5;
+    // double forwardSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftY), 3);
+    // double strafeSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftX), 3);
+    double forwardSpeed = -Math.pow(RobotContainer.joystick.getY(), 3);
+    double strafeSpeed = -Math.pow(RobotContainer.joystick.getX(), 3);
+
     //check if secondary sticks are being used
     /*if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
       Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightX))>.1){
@@ -58,7 +59,15 @@ public class DriveRobotCentric extends Command {
       strafeSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightX)*Constants.DRIVE_SPEED_SCALE_FACTOR;
     }*/
     //create rotation speed from gamepad triggers
-    double rotSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger) - Robot.robotContainer.getDriverAxis(Axis.kRightTrigger), 3);
+    // double rotSpeed = 0;
+    // if (RobotContainer.joystick.getRawButton(4)) {
+    //   rotSpeed = -0.33;
+    // } else if (RobotContainer.joystick.getRawButton(5)) {
+    //   rotSpeed = 0.33;
+    // }
+    double rotSpeed = Math.pow(RobotContainer.joystick.getTwist(), 3);
+
+    // double rotSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger) - Robot.robotContainer.getDriverAxis(Axis.kRightTrigger), 3);
 
     RobotContainer.swerveDrive.driveRobotCentric(
       forwardSpeed *Constants.DRIVER_SPEED_SCALE_LINEAR ,

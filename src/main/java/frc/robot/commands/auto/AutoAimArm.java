@@ -4,12 +4,28 @@
 
 package frc.robot.commands.auto;
 
+import java.util.Optional;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.LimeLight;
+import frc.robot.LimelightHelpers;
+import frc.robot.RobotContainer;
+import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.commands.fmu.MoveArmToAngle;
 
 public class AutoAimArm extends Command {
   /** Creates a new AutoAimArm. */
   public AutoAimArm() {
     // Use addRequirements() here to declare subsystem dependencies.
+  private LimelightTarget_Fiducial llAprilTag = new LimelightHelpers.LimelightTarget_Fiducial();
+  private LimeLight limelight = new LimeLight();
+  private LimelightHelpers llHelpers = new LimelightHelpers();
+
   }
 
   // Called when the command is initially scheduled.
@@ -28,7 +44,9 @@ public class AutoAimArm extends Command {
      *    set default arm angle
      * move arm to angle
      */
-
+    if (RobotContainer.optimalArmAngle > 0) {
+      new MoveArmToAngle(RobotContainer.optimalArmAngle);
+    }
 
   }
 

@@ -44,8 +44,10 @@ public class DriveFieldRelative extends Command {
   @Override
   public void execute() {
     RobotContainer.swerveDrive.isFieldRelative = true;
-    double  awaySpeed = -Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftY), 3);
-    double lateralSpeed = -Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftX), 3);
+    // double  awaySpeed = -Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftY), 3);
+    // double lateralSpeed = -Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftX), 3);
+    double awaySpeed = -Math.pow(RobotContainer.joystick.getX(), 3);
+    double lateralSpeed = -Math.pow(RobotContainer.joystick.getY(), 3);
     //check if secondary sticks are being used
     /*if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
      Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightX))>.1){
@@ -53,7 +55,8 @@ public class DriveFieldRelative extends Command {
      awaySpeed = Robot.robotContainer.getDriverAxis(Axis.kRightY)*Constants.DRIVE_SPEED_SCALE_FACTOR;
      lateralSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightX)*Constants.DRIVE_SPEED_SCALE_FACTOR;
     }*/
-    double rotSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger) - Robot.robotContainer.getDriverAxis(Axis.kRightTrigger), 3);
+    double rotSpeed = Math.pow(RobotContainer.joystick.getTwist(), 3);
+    //double rotSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger) - Robot.robotContainer.getDriverAxis(Axis.kRightTrigger), 3);
 
     RobotContainer.swerveDrive.driveFieldRelative(
       awaySpeed*Constants.DRIVER_SPEED_SCALE_LINEAR,

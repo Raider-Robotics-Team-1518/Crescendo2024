@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimeLight;
 import frc.robot.LimelightHelpers;
+import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 import frc.robot.LimelightHelpers.Results;
@@ -64,7 +65,9 @@ public class Blinkies extends SubsystemBase {
         SmartDashboard.putNumber("targetSpeakerTag", targetSpeakerAprilTag);
         if (fID > 0) {
           double distance = limelight.getDistanceToTarget(fID);
+          RobotContainer.optimalArmAngle = limelight.getOptimalArmAngle(distance);
           SmartDashboard.putNumber("Distance", distance);
+          SmartDashboard.putNumber("Optimal Arm Angle", RobotContainer.optimalArmAngle);
 
           if (distance > 0) {
             if (fID == targetSpeakerAprilTag && distance < Constants.FieldPositions.maxDistanceToSpeaker) {

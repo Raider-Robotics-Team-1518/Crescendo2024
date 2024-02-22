@@ -97,6 +97,16 @@ public class LimeLight {
     return distance;
   }
 
+  public double getOptimalArmAngle(double distance) {
+    /*
+     * Computed formula:
+     *  from Mr. Barnes and students' spreadsheet
+     *  181 -6.7 * distance + 0.27 * Math.pow(distance, 2)
+     */
+    final double distanceInFeet = distance / 12;
+    return 181 -6.7 * distanceInFeet + 0.27 * Math.pow(distanceInFeet, 2);
+  }
+
   /**
     Target area as percentage of camera FOV (LimeLight ta value)
     @return double (0-100)

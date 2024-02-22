@@ -10,6 +10,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController.Axis;
@@ -48,7 +49,8 @@ import frc.robot.subsystems.base.SwerveDrive;
 public class RobotContainer {
   // The robot's gamepads are defined here...
   
-  static final CommandXboxController driver = new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
+  public static final Joystick joystick = new Joystick(0);
+  // static final CommandXboxController driver = new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
   static final CommandXboxController codriver = new CommandXboxController(Constants.CODRIVER_CONTROLLER_PORT);
   
 /*
@@ -61,14 +63,16 @@ public class RobotContainer {
   //public static SwerveDrive swerveDrive;
   public static SwerveDrive swerveDrive; 
   public static FieldManipulationUnit fmu;
+  public static double optimalArmAngle = 0.0d;
 
   /* Command Choosers */
-  public static SendableChooser<Command> autoChooser = new SendableChooser<Command>(); // Autonomous
+  public static SendableChooser<Command> autoChooser;   // Autonomous
 
   /* LED Lights */
   public static Blinkies m_blinkies = new Blinkies();
 
   public RobotContainer() {
+    joystick.setTwistChannel(2);
 
     // Auto mode - Register Named Commands - needs to be at top of class
     NamedCommands.registerCommand("AutoIntake", new AutoIntake());
@@ -77,7 +81,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("AutoStopIntake", new AutoStopIntake());
 
     swerveDrive = new SwerveDrive();
-    swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
+    // swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
+    swerveDrive.setDefaultCommand(new DriveRobotCentric(false)); // for joystick testing
 
     fmu = new FieldManipulationUnit();
     fmu.setDefaultCommand(new MoveArm());
@@ -96,17 +101,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* ==================== DRIVER BUTTONS ==================== */
 
-    driver.start().toggleOnTrue(new DriveRobotCentric(false));
-    driver.back().toggleOnTrue(new DriveFieldRelative(false));
+    // note: these two were on the driver controller, moved for joystick testing
+    codriver.start().toggleOnTrue(new DriveRobotCentric(false));
+    codriver.back().toggleOnTrue(new DriveFieldRelative(false));
+    // driver.povUp().whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
+    // driver.povDown().whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));
 
     codriver.a().whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
-
     codriver.y().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.onFalse(new Shooter(0));
-
     codriver.b().whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
-
-    driver.povUp().whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
-    driver.povDown().whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));
 
     /* =================== CODRIVER BUTTONS =================== */
 
@@ -121,8 +124,8 @@ public class RobotContainer {
    */
   private void configureAutoModes() {
     // Build an auto chooser. This will use Commands.none() as the default option.
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   private void configureSwerveSetup() {
@@ -154,9 +157,10 @@ public class RobotContainer {
    * @return value of the joystick, from -1.0 to 1.0 where 0.0 is centered
    */
   public double getDriverAxis(Axis axis) {
-    return (driver.getRawAxis(axis.value) < -.1 || driver.getRawAxis(axis.value) > .1)
-        ? driver.getRawAxis(axis.value)
-        : 0.0;
+    // return (driver.getRawAxis(axis.value) < -.1 || driver.getRawAxis(axis.value) > .1)
+    //     ? driver.getRawAxis(axis.value)
+    //     : 0.0;
+    return 0.0;
   }
 
   /**
@@ -165,10 +169,10 @@ public class RobotContainer {
    * @param leftRumble
    * @param rightRumble
    */
-  public static void setDriverRumble(double leftRumble, double rightRumble) {
-    driver.getHID().setRumble(RumbleType.kLeftRumble, leftRumble);
-    driver.getHID().setRumble(RumbleType.kRightRumble, rightRumble);
-  }
+  // public static void setDriverRumble(double leftRumble, double rightRumble) {
+  //   driver.getHID().setRumble(RumbleType.kLeftRumble, leftRumble);
+  //   driver.getHID().setRumble(RumbleType.kRightRumble, rightRumble);
+  // }
 
   /**
    * Returns the int position of the DPad/POVhat based
@@ -186,7 +190,7 @@ public class RobotContainer {
    * @return
    */
   public int getDriverDPad() {
-    return (driver.getHID().getPOV());
+    return 0; // (driver.getHID().getPOV());
   }
 
   /**

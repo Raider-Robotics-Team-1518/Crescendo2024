@@ -5,8 +5,6 @@
 package frc.robot.commands.fmu;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-// import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -38,13 +36,6 @@ public class Shooter extends Command {
     if (timer.hasElapsed(Constants.Timings.bumpDelayInSeconds)) {
       RobotContainer.fmu.bumpIntake();
     }
-    // Commands.waitSeconds(0.05d);
-    // // Timer.delay(0.05d);
-    // RobotContainer.fmu.setShooterSpeed(speed);
-    // Commands.waitSeconds(0.5d);
-    // // Timer.delay(0.5d);
-    // RobotContainer.fmu.bumpIntake();
-
   }
 
   // Called once the command ends or is interrupted.
