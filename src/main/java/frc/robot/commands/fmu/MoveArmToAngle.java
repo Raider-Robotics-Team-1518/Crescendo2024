@@ -27,7 +27,7 @@ public class MoveArmToAngle extends Command {
         // Move arm up or down to default speaker angle
         if (Math.abs(this.set_angle - current_angle) > Constants.Tolerances.armAimingTolerance) {
             double sign = Math.signum(this.set_angle - current_angle);
-            RobotContainer.fmu.move_arm(sign * powerUp);
+            RobotContainer.fmu.move_arm(sign * powerUp * 0.1);
         } else {
             RobotContainer.fmu.move_arm(0);
         }

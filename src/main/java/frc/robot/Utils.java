@@ -54,4 +54,9 @@ public class Utils {
 
         return new float[] { h, s * 100, l * 100 };
     }
+
+    public static double round2prec (double value, int precision) {
+        int scale = (int) Math.pow(10, precision);
+        return (double) Math.round(value * scale) / scale;
+    } 
 }

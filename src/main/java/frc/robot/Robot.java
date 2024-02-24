@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    SmartDashboard.putNumber("ARM ANGLE", RobotContainer.fmu.get_arm_position());
+    SmartDashboard.putNumber("ARM ANGLE", Utils.round2prec(RobotContainer.fmu.get_arm_position(), 1));
     final double[] moduleAngles = RobotContainer.swerveDrive.getAllAbsModuleAngles();
     SmartDashboard.putNumber("SwerveModules/FrntL-Angle", moduleAngles[0]);
     SmartDashboard.putNumber("SwerveModules/RearL-Angle", moduleAngles[1]);

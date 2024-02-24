@@ -33,6 +33,7 @@ import frc.robot.commands.drive.util.DriveResetAllModulePositionsToZero;
 import frc.robot.commands.drive.util.pid.DriveRotationExport;
 import frc.robot.commands.drive.util.pid.DriveTranslationExport;
 import frc.robot.commands.fmu.MoveArm;
+import frc.robot.commands.fmu.MoveArmToAngle;
 import frc.robot.commands.fmu.Climb;
 import frc.robot.commands.fmu.Shooter;
 import frc.robot.commands.fmu.ShooterIntake;
@@ -63,7 +64,7 @@ public class RobotContainer {
   //public static SwerveDrive swerveDrive;
   public static SwerveDrive swerveDrive; 
   public static FieldManipulationUnit fmu;
-  public static double optimalArmAngle = 0.0d;
+  public static double optimalArmAngle = 161.0d;
 
   /* Command Choosers */
   public static SendableChooser<Command> autoChooser;   // Autonomous
@@ -101,15 +102,17 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* ==================== DRIVER BUTTONS ==================== */
 
-    // note: these two were on the driver controller, moved for joystick testing
-    codriver.start().toggleOnTrue(new DriveRobotCentric(false));
-    codriver.back().toggleOnTrue(new DriveFieldRelative(false));
+    JoystickButton button3 = new JoystickButton(joystick, 3);
+    button3.toggleOnTrue(new DriveFieldRelative(false));
+    button3.toggleOnFalse(new DriveRobotCentric(false));
+
     // driver.povUp().whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
     // driver.povDown().whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));
 
     codriver.a().whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
     codriver.y().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.onFalse(new Shooter(0));
     codriver.b().whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
+    codriver.leftBumper().onTrue(new MoveArmToAngle(optimalArmAngle));
 
     /* =================== CODRIVER BUTTONS =================== */
 
@@ -124,8 +127,8 @@ public class RobotContainer {
    */
   private void configureAutoModes() {
     // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // autoChooser = AutoBuilder.buildAutoChooser();
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   private void configureSwerveSetup() {

@@ -289,7 +289,7 @@ public final class Constants {
   }
 
   public static final class Tolerances {
-    public static final double armAimingTolerance = 0.10d; // angle, how close to the desired angle do we have to be
+    public static final double armAimingTolerance = 1.00d; // angle, how close to the desired angle do we have to be
   }
 
   /* Solenoid Channels */

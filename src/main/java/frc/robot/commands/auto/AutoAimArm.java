@@ -22,9 +22,6 @@ public class AutoAimArm extends Command {
   /** Creates a new AutoAimArm. */
   public AutoAimArm() {
     // Use addRequirements() here to declare subsystem dependencies.
-  private LimelightTarget_Fiducial llAprilTag = new LimelightHelpers.LimelightTarget_Fiducial();
-  private LimeLight limelight = new LimeLight();
-  private LimelightHelpers llHelpers = new LimelightHelpers();
 
   }
 
