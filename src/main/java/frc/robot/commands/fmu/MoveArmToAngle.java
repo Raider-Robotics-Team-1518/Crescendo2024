@@ -5,8 +5,6 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class MoveArmToAngle extends Command {
-    private double powerUp = Constants.MotorSpeeds.armPowerUp;
-    // private double powerDn = Constants.MotorSpeeds.armPowerDn;
     private double current_angle = RobotContainer.fmu.get_arm_position();
     private double set_angle = current_angle;
     
@@ -22,21 +20,13 @@ public class MoveArmToAngle extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // Check value of shoulder encoder
-        current_angle = RobotContainer.fmu.get_arm_position();
-        // Move arm up or down to default speaker angle
-        if (Math.abs(this.set_angle - current_angle) > Constants.Tolerances.armAimingTolerance) {
-            double sign = Math.signum(this.set_angle - current_angle);
-            RobotContainer.fmu.move_arm(sign * powerUp * 0.1);
-        } else {
-            RobotContainer.fmu.move_arm(0);
-        }
+        RobotContainer.fmu.moveArmToAngle(set_angle);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        //RobotContainer.fmu.stop_arm();
+        RobotContainer.fmu.stop_arm();
     }
 
     // Returns true when the command should end.

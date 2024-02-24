@@ -225,8 +225,14 @@ public final class Constants {
     public static final double shooterSpeedForSpeaker = 1.0d;
     public static final double shooterSpeedForAmp = -0.5d;
     public static final double armPowerUp = 0.50d;
-    public static final double armPowerDn = 0.35d;
+    public static final double armPowerDn = 0.25d;
     public static final double climbPower = 0.25d;
+  }
+
+  public static final class PidConstants {
+    public static final double kP = 1.0d;
+    public static final double kI = 0.0d;
+    public static final double kD = 0.0d;
   }
 
   public static final class Timings {

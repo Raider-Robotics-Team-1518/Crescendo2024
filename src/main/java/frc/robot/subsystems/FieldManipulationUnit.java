@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
@@ -38,6 +39,7 @@ public class FieldManipulationUnit extends SubsystemBase {
   private boolean override_note_is_loaded;
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  public final PIDController armPidController = new PIDController(Constants.PidConstants.kP, Constants.PidConstants.kI, Constants.PidConstants.kD);
 
 
   public FieldManipulationUnit () {
@@ -63,6 +65,8 @@ public class FieldManipulationUnit extends SubsystemBase {
     follow_arm_motor.setControl(new Follower(Constants.LEAD_ARM_MOTOR, true));
     arm_position = new DutyCycleEncoder(5);
     arm_position.setDistancePerRotation(1.0d);
+
+    armPidController.setTolerance(Constants.Tolerances.armAimingTolerance);
 
     //climb_motor = new CANSparkMax(Constants.CLIMB_MOTOR, MotorType.kBrushless);
     override_note_is_loaded = false;
@@ -102,6 +106,15 @@ public class FieldManipulationUnit extends SubsystemBase {
 
   public void stop_arm(){
     lead_arm_motor.set(0);
+  }
+
+  public void moveArmToAngle(double angle) {
+    double motorSpeed = armPidController.calculate(get_arm_position(), angle);
+    if (!armPidController.atSetpoint()) {
+      lead_arm_motor.set(motorSpeed);
+    } else {
+      stop_arm();
+    }
   }
 
   public void move_climb(double power){
