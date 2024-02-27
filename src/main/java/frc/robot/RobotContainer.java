@@ -112,6 +112,10 @@ public class RobotContainer {
     codriver.a().whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
     codriver.y().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.onFalse(new Shooter(0));
     codriver.b().whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
+
+    codriver.povUp().whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));
+    codriver.povDown().whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
+
     // oscillates pretty severely so disabled for now. See TestBed_PID branch for an attempt at PID control
     // codriver.leftBumper().onTrue(new MoveArmToAngle(optimalArmAngle));
 

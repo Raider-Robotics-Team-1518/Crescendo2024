@@ -17,6 +17,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.Constants;
 import frc.robot.Utils;
@@ -36,7 +37,7 @@ public class FieldManipulationUnit extends SubsystemBase {
   private TalonFX follow_arm_motor;
   private DutyCycleEncoder arm_position;
   private boolean override_note_is_loaded;
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  private final I2C.Port i2cPort = I2C.Port.kMXP;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
 
@@ -64,7 +65,8 @@ public class FieldManipulationUnit extends SubsystemBase {
     arm_position = new DutyCycleEncoder(5);
     arm_position.setDistancePerRotation(1.0d);
 
-    //climb_motor = new CANSparkMax(Constants.CLIMB_MOTOR, MotorType.kBrushless);
+    climb_motor = new CANSparkMax(Constants.CLIMB_MOTOR, MotorType.kBrushless);
+    climb_motor.setIdleMode(IdleMode.kBrake);
     override_note_is_loaded = false;
 
   }
