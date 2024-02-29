@@ -117,7 +117,7 @@ public class RobotContainer {
     codriver.povDown().whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
 
     // oscillates pretty severely so disabled for now. See TestBed_PID branch for an attempt at PID control
-    // codriver.leftBumper().onTrue(new MoveArmToAngle(optimalArmAngle));
+    codriver.leftBumper().whileTrue(new MoveArmToAngle(optimalArmAngle));
 
     /* =================== CODRIVER BUTTONS =================== */
 

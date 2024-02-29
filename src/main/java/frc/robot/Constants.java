@@ -222,16 +222,16 @@ public final class Constants {
     public static final double intakeSpeed = 0.45d;
     public static final double intakeBumpSpeed = 1.0d;
     public static final double intakeReverse = -0.20d;
-    public static final double shooterSpeedForSpeaker = 1.0d;
+    public static final double shooterSpeedForSpeaker = 0.85d;
     public static final double shooterSpeedForAmp = -0.5d;
-    public static final double armPowerUp = 0.50d;
+    public static final double armPowerUp = 0.75d;
     public static final double armPowerDn = 0.25d;
     public static final double climbPower = 0.25d;
   }
 
   public static final class Timings {
-    public static final double driveIntakeBackwardInSeconds = 0.05d;
-    public static final double bumpDelayInSeconds = 0.50d;
+    public static final double driveIntakeBackwardInSeconds = 0.03d;
+    public static final double bumpDelayInSeconds = 0.40d;
     public static final double resetColorSensorDelay = 2.0d;
   }
 
@@ -290,6 +290,11 @@ public final class Constants {
 
   public static final class Tolerances {
     public static final double armAimingTolerance = 1.00d; // angle, how close to the desired angle do we have to be
+  }
+  
+  public static final class Limits {
+    public static final double armMinAngle = 92;
+    public static final double armMaxAngle = 192;
   }
 
   /* Solenoid Channels */

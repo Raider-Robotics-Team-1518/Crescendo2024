@@ -25,7 +25,7 @@ public class MoveArm extends Command {
     @Override
     public void execute() {
         if(Robot.robotContainer.getCoDriverAxis(Axis.kLeftY) > 0.0d) {
-            if (RobotContainer.fmu.get_arm_position() < 192) {
+            if (RobotContainer.fmu.get_arm_position() < Constants.Limits.armMaxAngle) {
                 RobotContainer.fmu.move_arm(Robot.robotContainer.getCoDriverAxis(Axis.kLeftY) * powerUp);
             }
             else {
@@ -33,7 +33,7 @@ public class MoveArm extends Command {
             }
         }
         else {
-            if (RobotContainer.fmu.get_arm_position() > 92) {
+            if (RobotContainer.fmu.get_arm_position() > Constants.Limits.armMinAngle) {
                 RobotContainer.fmu.move_arm(Robot.robotContainer.getCoDriverAxis(Axis.kLeftY) * powerDn);
             }
             else {

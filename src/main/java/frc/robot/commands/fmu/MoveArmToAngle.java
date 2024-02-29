@@ -24,12 +24,14 @@ public class MoveArmToAngle extends Command {
     public void execute() {
         // Check value of shoulder encoder
         current_angle = RobotContainer.fmu.get_arm_position();
+        // Calculate power curve proportional
+        powerUp = Math.abs(this.set_angle - current_angle) / 100;
         // Move arm up or down to default speaker angle
         if (Math.abs(this.set_angle - current_angle) > Constants.Tolerances.armAimingTolerance) {
             double sign = Math.signum(this.set_angle - current_angle);
-            RobotContainer.fmu.move_arm(sign * powerUp * 0.1);
+            RobotContainer.fmu.move_arm(sign * (powerUp + 0.25d));
         } else {
-            RobotContainer.fmu.move_arm(0);
+            RobotContainer.fmu.stop_arm();
         }
     }
 
