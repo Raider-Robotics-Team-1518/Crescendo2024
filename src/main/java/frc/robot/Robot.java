@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("SwerveModules/RearL-Angle", moduleAngles[1]);
     SmartDashboard.putNumber("SwerveModules/RearR-Angle", moduleAngles[2]);
     SmartDashboard.putNumber("SwerveModules/FrntR-Angle", moduleAngles[3]);
+    SmartDashboard.putNumber("Target/H-Offset", (int) RobotContainer.limeLight1.getTargetOffsetHorizontal());
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
@@ -92,6 +93,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("Target/H-Offset", (int) RobotContainer.limeLight1.getTargetOffsetHorizontal());
     
   }
 

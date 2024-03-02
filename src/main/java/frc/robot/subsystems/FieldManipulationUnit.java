@@ -17,6 +17,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.Constants;
@@ -107,6 +108,7 @@ public class FieldManipulationUnit extends SubsystemBase {
   }
 
   public void move_climb(double power){
+    //climb_motor.getAbsoluteEncoder(EncoderType.kQuadrature);
     climb_motor.set(power);
   }
 

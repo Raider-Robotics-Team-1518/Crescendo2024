@@ -11,7 +11,7 @@ import frc.robot.RobotContainer;
 
 public class AutoShootSpeaker extends Command {
   /** Creates a new AutoShootSpeaker. */
-  private double speed = Constants.MotorSpeeds.intakeSpeed;
+  private double speed = Constants.MotorSpeeds.shooterSpeedForSpeaker;
   private Timer timer;
 
   public AutoShootSpeaker() {

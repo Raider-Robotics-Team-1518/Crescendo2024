@@ -226,7 +226,7 @@ public final class Constants {
     public static final double shooterSpeedForAmp = -0.5d;
     public static final double armPowerUp = 0.75d;
     public static final double armPowerDn = 0.25d;
-    public static final double climbPower = 0.25d;
+    public static final double climbPower = 0.50d;
   }
 
   public static final class Timings {
@@ -295,6 +295,7 @@ public final class Constants {
   public static final class Limits {
     public static final double armMinAngle = 92;
     public static final double armMaxAngle = 192;
+    public static final double armLoadAngle = 175;
   }
 
   /* Solenoid Channels */

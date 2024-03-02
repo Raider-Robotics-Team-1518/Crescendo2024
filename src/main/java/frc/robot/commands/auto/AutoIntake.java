@@ -7,6 +7,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.fmu.MoveArmToAngle;
 
 public class AutoIntake extends Command {
   /** Creates a new AutoIntake. */
@@ -23,9 +24,10 @@ public class AutoIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    new MoveArmToAngle(Constants.Limits.armMaxAngle);
     if (!RobotContainer.fmu.isNoteLoaded()) {
       RobotContainer.fmu.setIntakeSpeed(speed);
-    }
+    } 
 
   }
 

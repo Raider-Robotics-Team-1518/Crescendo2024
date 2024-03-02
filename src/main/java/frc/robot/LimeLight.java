@@ -104,7 +104,7 @@ public class LimeLight {
      *  181 -6.7 * distance + 0.27 * Math.pow(distance, 2)
      */
     final double distanceInFeet = distance / 12;
-    return 181 -6.7 * distanceInFeet + 0.27 * Math.pow(distanceInFeet, 2);
+    return 178 -6.7 * distanceInFeet + 0.27 * Math.pow(distanceInFeet, 2);
   }
 
   /**
