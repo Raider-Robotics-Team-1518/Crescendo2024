@@ -137,8 +137,8 @@ public class RobotContainer {
    */
   private void configureAutoModes() {
     // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    //autoChooser = AutoBuilder.buildAutoChooser();
+    //SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   private void configureSwerveSetup() {

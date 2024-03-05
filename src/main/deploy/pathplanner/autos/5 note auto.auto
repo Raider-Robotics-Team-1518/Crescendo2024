@@ -1,0 +1,133 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 2.0,
+      "y": 5.52661562465982
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center back with shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoStopIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center forward with shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center drive to third note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoStopIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Third note to center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "speaker to 1st note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoStopIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSide drive forward"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoAimArm"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoShootSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left to 5th center note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoStopIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoAimArm"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoShootSpeaker"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.drive.util.DriveTurnToAngleInRad;
 
 public class FullAiming extends Command {
     private double powerUp = Constants.MotorSpeeds.armPowerUp;
@@ -13,8 +14,9 @@ public class FullAiming extends Command {
     // private double powerDn = Constants.MotorSpeeds.armPowerDn;
     private double current_angle = RobotContainer.fmu.get_arm_position();
     private double set_angle = current_angle;
-    private int horizOffset = (int) RobotContainer.limeLight1.getTargetOffsetHorizontal();
-    
+    private double horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
+    private double robotPose = RobotContainer.swerveDrive.getGyroInRad();
+    private int onTargetCount;
     public FullAiming() {
         addRequirements(RobotContainer.fmu);
         //addRequirements(RobotContainer.swerveDrive);
@@ -22,7 +24,9 @@ public class FullAiming extends Command {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+        onTargetCount = 0;
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
@@ -30,7 +34,9 @@ public class FullAiming extends Command {
         // Check to see if LimeLight has acquired target lock
         if (isTargetVisible) { // April Tag Visible
             set_angle = RobotContainer.limeLight1.getOptimalArmAngle(RobotContainer.limeLight1.getDistanceToTarget(targetID));
-            horizOffset = (int) RobotContainer.limeLight1.getTargetOffsetHorizontal();
+            horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
+            robotPose = RobotContainer.swerveDrive.getGyroInRad();
+
         } else {
             set_angle = RobotContainer.optimalArmAngle;
             horizOffset = 0;
@@ -39,7 +45,7 @@ public class FullAiming extends Command {
         current_angle = RobotContainer.fmu.get_arm_position();
         // Calculate power curve proportional
         powerUp = Math.abs(this.set_angle - current_angle) / 100;
-        powerSteer = 0.2d; // 0.5 - Math.pow((horizOffset / 27), 2);
+        powerSteer = 0.3d; // 0.5 - Math.pow((horizOffset / 27), 2);
         // Move arm up or down to default speaker angle
         if (Math.abs(this.set_angle - current_angle) > Constants.Tolerances.armAimingTolerance) {
             double v_sign = Math.signum(this.set_angle - current_angle);
@@ -47,10 +53,17 @@ public class FullAiming extends Command {
         } else {
             RobotContainer.fmu.stop_arm();
         }
+    
         // Rotate Robot to center on April Tag
-        if (Math.abs(horizOffset) > 3 ) { // Constants.Tolerances.armAimingTolerance) {
-            double h_sign = Math.signum(0 - horizOffset);
-            RobotContainer.swerveDrive.driveRobotCentric(0, 0, h_sign * (powerSteer + 0.0d), false, true);  // h_sign * (powerSteer + 0.2d)
+        if (Math.abs(horizOffset) > 0.03d ) { // Constants.Tolerances.armAimingTolerance) {
+            //double h_sign = Math.signum(0 - horizOffset);
+            //System.out.println("Turning to " + targetPose);
+            //new DriveTurnToAngleInRad(targetPose);  // h_sign * (powerSteer + 0.2d)
+            double targetPose = robotPose + horizOffset;
+            double output = RobotContainer.swerveDrive.getRobotRotationPIDOut(targetPose);
+            System.out.println("targetPose " +targetPose +" robotPose " +robotPose + " h_offset " +horizOffset +" pid output " +output);
+            RobotContainer.swerveDrive.driveRobotCentric(0, 0, -output, false, true);
+
         } else {
             RobotContainer.swerveDrive.stopAllModules();
         }

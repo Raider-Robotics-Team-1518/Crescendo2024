@@ -43,7 +43,7 @@ public class DriveTurnToAngleInRad extends Command {
   @Override
   public void execute() {
     double output = RobotContainer.swerveDrive.getRobotRotationPIDOut(angle);
-    // System.out.println("pid output"+output);
+    System.out.println("pid output"+output);
     RobotContainer.swerveDrive.driveRobotCentric(0, 0, output, false, true);
     if(Math.abs(angle - RobotContainer.swerveDrive.getGyroInRad()) < .03){
       onTargetCount++;
