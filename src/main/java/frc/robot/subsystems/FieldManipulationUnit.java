@@ -40,6 +40,7 @@ public class FieldManipulationUnit extends SubsystemBase {
   private boolean override_note_is_loaded;
   private final I2C.Port i2cPort = I2C.Port.kMXP;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  public double climb_pos = 0.0d;
 
 
   public FieldManipulationUnit () {
@@ -108,11 +109,20 @@ public class FieldManipulationUnit extends SubsystemBase {
   }
 
   public void move_climb(double power){
-    //climb_motor.getAbsoluteEncoder(EncoderType.kQuadrature);
-    climb_motor.set(power);
+    climb_pos = climb_motor.getEncoder().getPosition();
+    if((climb_pos >= Constants.Limits.climbMax) && (Math.signum(power) < 0)) {
+      climb_motor.set(power);
+    } else {
+      if((climb_pos <= Constants.Limits.climbMin) && (Math.signum(power) > 0)) {
+      climb_motor.set(power);
+      } else {
+        climb_motor.set(0.0);
+      }
+    }
   }
 
   public void stop_climb(){
+    climb_pos = climb_motor.getEncoder().getPosition();
     climb_motor.set(0);
   }
 

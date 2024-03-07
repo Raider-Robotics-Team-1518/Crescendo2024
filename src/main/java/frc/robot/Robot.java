@@ -67,7 +67,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // robotContainer.swerveDrive.resetGyro();   // gives warning about accessing a static
-    RobotContainer.swerveDrive.resetGyro();
     autonomousCommand = RobotContainer.autoChooser.getSelected();
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
@@ -94,6 +93,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     SmartDashboard.putNumber("Target/H-Offset", (int) RobotContainer.limeLight1.getTargetOffsetHorizontal());
+    SmartDashboard.putNumber("ClimbEncoder", RobotContainer.fmu.climb_pos);
     
   }
 

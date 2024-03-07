@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import frc.robot.Constants;
@@ -100,7 +99,8 @@ public class SwerveDrive extends SubsystemBase {
     robotCounterSpinController = new PIDController(Constants.ROBOT_COUNTER_SPIN_P, Constants.ROBOT_COUNTER_SPIN_I, Constants.ROBOT_COUNTER_SPIN_D);
     robotCounterSpinController.setTolerance(Constants.ROBOT_SPIN_PID_TOLERANCE);
 
-    hasPoseBeenSet = false;    
+    hasPoseBeenSet = false;
+
   }
 
   @Override
@@ -563,7 +563,7 @@ public class SwerveDrive extends SubsystemBase {
       new HolonomicPathFollowerConfig(
         Constants.AutoConstants.TRANSLATION_PID,
         Constants.AutoConstants.ANGLE_PID,
-        4.5, // max module speed in m/s
+        1.5, // max module speed in m/s
         Constants.DRIVE_BASE_RADIUS, // in meters from center to furthest module
         new ReplanningConfig()
       ), 

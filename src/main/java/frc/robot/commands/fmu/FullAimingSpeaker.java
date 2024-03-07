@@ -6,7 +6,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.drive.util.DriveTurnToAngleInRad;
 
-public class FullAiming extends Command {
+public class FullAimingSpeaker extends Command {
     private double powerUp = Constants.MotorSpeeds.armPowerUp;
     private boolean isTargetVisible = RobotContainer.limeLight1.isTargetVisible();
     private int targetID = (int) RobotContainer.llHelpers.getFiducialID("limelight");
@@ -15,7 +15,7 @@ public class FullAiming extends Command {
     private double set_angle = current_angle;
     private double horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
     private double robotPose = RobotContainer.swerveDrive.getGyroInRad();
-    public FullAiming() {
+    public FullAimingSpeaker() {
         addRequirements(RobotContainer.fmu);
         //addRequirements(RobotContainer.swerveDrive);
     }
@@ -29,10 +29,12 @@ public class FullAiming extends Command {
     @Override
     public void execute() {
         // Check to see if LimeLight has acquired target lock
+        RobotContainer.shooterSpeed = Constants.MotorSpeeds.shooterSpeedForSpeaker;
+
         if (isTargetVisible) { // April Tag Visible
             set_angle = RobotContainer.limeLight1.getOptimalArmAngle(RobotContainer.limeLight1.getDistanceToTarget(targetID));
-            //horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
-            //robotPose = RobotContainer.swerveDrive.getGyroInRad();
+            horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
+            robotPose = RobotContainer.swerveDrive.getGyroInRad();
 
         } else {
             set_angle = RobotContainer.optimalArmAngle;
