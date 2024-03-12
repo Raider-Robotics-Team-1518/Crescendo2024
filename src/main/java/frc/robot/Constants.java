@@ -77,19 +77,29 @@ public final class Constants {
   public static final Rotation2d ROTATE_BY_PI = Rotation2d.fromDegrees(180);
 
   /* Swerve Module Positions */
-  /* 2023 Coordinates */
-  /*public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.4826, 0.4826);// These are in meters
-  public static final Translation2d REAR_LEFT_POSITION = new Translation2d(-0.4826, 0.4826);
-  public static final Translation2d REAR_RIGHT_POSITION = new Translation2d(-0.4826, -0.4826);
-  public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0.4826, -0.4826);
-  public static final double DRIVE_BASE_RADIUS = 0.4826; // in meters, distance from center to furthest module */
-  /* 2024 Coordinates */
-  public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.23, 0.15);// These are in meters
-  public static final Translation2d REAR_LEFT_POSITION = new Translation2d(-0.26, 0.15);
-  public static final Translation2d REAR_RIGHT_POSITION = new Translation2d(-0.26, -0.59);
-  public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0.23, -0.59);
-  public static final double DRIVE_BASE_RADIUS = 0.4650; // in meters, distance from center to furthest module
+  public static final class SwerveModulePosition{
 
+    /* 2023 Coordinates */
+    /*public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.4826, 0.4826);// These are in meters
+    public static final Translation2d REAR_LEFT_POSITION = new Translation2d(-0.4826, 0.4826);
+    public static final Translation2d REAR_RIGHT_POSITION = new Translation2d(-0.4826, -0.4826);
+    public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0.4826, -0.4826);
+    public static final double DRIVE_BASE_RADIUS = 0.4826; // in meters, distance from center to furthest module */
+    
+    /* 2024 Coordinates - Location of Gyro */
+    /*public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.23, 0.15);// These are in meters
+    public static final Translation2d REAR_LEFT_POSITION = new Translation2d(-0.26, 0.15);
+    public static final Translation2d REAR_RIGHT_POSITION = new Translation2d(-0.26, -0.59);
+    public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0.23, -0.59);
+    public static final double DRIVE_BASE_RADIUS = 0.4650; // in meters, distance from center to furthest module */
+    
+    /* 2024 Coordinates - From Center of Robot */
+    public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.245, 0.37);// These are in meters
+    public static final Translation2d REAR_LEFT_POSITION = new Translation2d(-0.245, 0.37);
+    public static final Translation2d REAR_RIGHT_POSITION = new Translation2d(-0.245, -0.37);
+    public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0.245, -0.37);
+    public static final double DRIVE_BASE_RADIUS = 0.4650; // in meters, distance from center to furthest module
+  }
   /* Swerve Module Drive Motor Constants */
   public static final double DRIVE_ENC_TO_METERS_FACTOR = 0.00001903342;
   // !! newest calculation (not tested) !!

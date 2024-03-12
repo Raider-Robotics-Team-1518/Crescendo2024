@@ -82,8 +82,8 @@ public class SwerveDrive extends SubsystemBase {
     
     //Create kinematics object, which converts between ChassisSpeeds and ModuleStates
     driveKinematics = new SwerveDriveKinematics(
-      Constants.FRONT_LEFT_POSITION, Constants.REAR_LEFT_POSITION, 
-      Constants.REAR_RIGHT_POSITION, Constants.FRONT_RIGHT_POSITION);
+      Constants.SwerveModulePosition.FRONT_LEFT_POSITION, Constants.SwerveModulePosition.REAR_LEFT_POSITION, 
+      Constants.SwerveModulePosition.REAR_RIGHT_POSITION, Constants.SwerveModulePosition.FRONT_RIGHT_POSITION);
 
     // Constructs IMU object
     imu = new AHRS(SerialPort.Port.kUSB);//Must use params, won't work without
@@ -299,8 +299,8 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d initialHolonomicPose) {
-    // driveOdometry.resetPosition(initialHolonomicPose.getRotation(), getSwerveModulePositions(), getCurPose2d());
-    driveOdometry.resetPosition(getGyroRotation2d(), getSwerveModulePositions(), getCurPose2d());
+    driveOdometry.resetPosition(initialHolonomicPose.getRotation(), getSwerveModulePositions(), getCurPose2d());
+    // driveOdometry.resetPosition(getGyroRotation2d(), getSwerveModulePositions(), getCurPose2d());
   }
 
 
@@ -565,7 +565,7 @@ public class SwerveDrive extends SubsystemBase {
         Constants.AutoConstants.TRANSLATION_PID,
         Constants.AutoConstants.ANGLE_PID,
         1.5, // max module speed in m/s
-        Constants.DRIVE_BASE_RADIUS, // in meters from center to furthest module
+        Constants.SwerveModulePosition.DRIVE_BASE_RADIUS, // in meters from center to furthest module
         new ReplanningConfig()
       ), 
       // Boolean supplier that controls when the path will be mirrored for red alliance
