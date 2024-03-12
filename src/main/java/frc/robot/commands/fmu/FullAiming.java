@@ -15,9 +15,10 @@ public class FullAiming extends Command {
     private double set_angle = current_angle;
     private double horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
     private double robotPose = RobotContainer.swerveDrive.getGyroInRad();
+    
     public FullAiming() {
         addRequirements(RobotContainer.fmu);
-        //addRequirements(RobotContainer.swerveDrive);
+        addRequirements(RobotContainer.swerveDrive);
     }
 
     // Called when the command is initially scheduled.
@@ -31,8 +32,8 @@ public class FullAiming extends Command {
         // Check to see if LimeLight has acquired target lock
         if (isTargetVisible) { // April Tag Visible
             set_angle = RobotContainer.limeLight1.getOptimalArmAngle(RobotContainer.limeLight1.getDistanceToTarget(targetID));
-            //horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
-            //robotPose = RobotContainer.swerveDrive.getGyroInRad();
+            horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
+            robotPose = RobotContainer.swerveDrive.getGyroInRad();
 
         } else {
             set_angle = RobotContainer.optimalArmAngle;

@@ -36,6 +36,9 @@ public class Shooter extends Command {
     if (timer.hasElapsed(Constants.Timings.bumpDelayInSeconds)) {
       RobotContainer.fmu.bumpIntake();
     }
+    if (timer.hasElapsed(2.5d)) {
+      isFinished();
+    }
   }
 
   // Called once the command ends or is interrupted.

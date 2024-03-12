@@ -10,11 +10,13 @@ public class FullAimingSpeaker extends Command {
     private double powerUp = Constants.MotorSpeeds.armPowerUp;
     private boolean isTargetVisible = RobotContainer.limeLight1.isTargetVisible();
     private int targetID = (int) RobotContainer.llHelpers.getFiducialID("limelight");
-    // private double powerDn = Constants.MotorSpeeds.armPowerDn;
     private double current_angle = RobotContainer.fmu.get_arm_position();
     private double set_angle = current_angle;
     private double horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
     private double robotPose = RobotContainer.swerveDrive.getGyroInRad();
+    private boolean v_aligned = false;
+    private boolean h_aligned = false;
+
     public FullAimingSpeaker() {
         addRequirements(RobotContainer.fmu);
         //addRequirements(RobotContainer.swerveDrive);
@@ -50,6 +52,7 @@ public class FullAimingSpeaker extends Command {
             RobotContainer.fmu.move_arm(v_sign * (powerUp + 0.25d));
         } else {
             RobotContainer.fmu.stop_arm();
+            v_aligned = true;
         }
     
         // Rotate Robot to center on April Tag
@@ -64,6 +67,10 @@ public class FullAimingSpeaker extends Command {
 
         } else {
             RobotContainer.swerveDrive.stopAllModules();
+            h_aligned = true;
+        }
+        if(v_aligned && h_aligned) {
+            this.isFinished();
         }
     }
 

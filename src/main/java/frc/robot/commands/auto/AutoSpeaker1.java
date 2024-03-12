@@ -6,10 +6,9 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
-import frc.robot.commands.fmu.FullAiming;
-import frc.robot.commands.fmu.MoveArmToAngle;
+import frc.robot.commands.drive.DriveFieldRelativeAdvanced;
+import frc.robot.commands.fmu.FullAimingSpeaker;
 
 public class AutoSpeaker1 extends Command {
   /** Creates a new AutoAimArm. */
@@ -29,8 +28,11 @@ public class AutoSpeaker1 extends Command {
   @Override
   public void execute() {
     timer.start();
-    // RobotContainer.swerveDrive.driveFieldRelative(0.40d, 0, 0, false);
-    new MoveArmToAngle(RobotContainer.optimalArmAngle);
+    
+    RobotContainer.swerveDrive.driveFieldRelative(0.40d, 0, 0, false);
+    if(timer.hasElapsed(2.0d)){
+      new StopDriveTrain().andThen(new FullAimingSpeaker()).andThen(new AutoShootSpeaker()).end(false);
+    }
   }
 
   // Called once the command ends or is interrupted.

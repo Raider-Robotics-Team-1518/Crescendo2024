@@ -14,9 +14,12 @@ public class FullAimingAmp extends Command {
     private double set_angle = current_angle;
     private double horizOffset = RobotContainer.limeLight1.getTargetOffsetHorizontal() * Math.PI / 180.0d;
     private double robotPose = RobotContainer.swerveDrive.getGyroInRad();
+    private boolean v_aligned = false;
+    private boolean h_aligned = false;
+
     public FullAimingAmp() {
         addRequirements(RobotContainer.fmu);
-        //addRequirements(RobotContainer.swerveDrive);
+        addRequirements(RobotContainer.swerveDrive);
     }
 
     // Called when the command is initially scheduled.
@@ -48,6 +51,7 @@ public class FullAimingAmp extends Command {
             RobotContainer.fmu.move_arm(v_sign * (powerUp + 0.25d));
         } else {
             RobotContainer.fmu.stop_arm();
+            v_aligned = true;
         }
     
         // Rotate Robot to center on April Tag
@@ -62,6 +66,10 @@ public class FullAimingAmp extends Command {
 
         } else {
             RobotContainer.swerveDrive.stopAllModules();
+            h_aligned = true;
+        }
+        if (v_aligned && h_aligned) {
+            isFinished();
         }
     }
 
