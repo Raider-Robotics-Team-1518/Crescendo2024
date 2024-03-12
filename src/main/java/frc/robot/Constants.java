@@ -132,7 +132,7 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(SWERVE_DRIVE_P_VALUE, SWERVE_DRIVE_I_VALUE, SWERVE_DRIVE_D_VALUE);
-    public static final PIDConstants ANGLE_PID = new PIDConstants(SWERVE_ROT_P_VALUE, SWERVE_ROT_I_VALUE, SWERVE_ROT_D_VALUE); // real values for us
+    public static final PIDConstants ANGLE_PID = new PIDConstants(ROBOT_SPIN_P, ROBOT_SPIN_I, ROBOT_SPIN_D); // real values for us
   }
 
   public static final double SWERVE_DRIVE_P_VELOCITY = 0.0256135252274057; // 0.2928
