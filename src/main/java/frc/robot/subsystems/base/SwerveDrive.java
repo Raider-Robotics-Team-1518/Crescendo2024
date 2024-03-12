@@ -564,7 +564,7 @@ public class SwerveDrive extends SubsystemBase {
       new HolonomicPathFollowerConfig(
         Constants.AutoConstants.TRANSLATION_PID,
         Constants.AutoConstants.ANGLE_PID,
-        1.5, // max module speed in m/s
+        2.5, // max module speed in m/s
         Constants.SwerveModulePosition.DRIVE_BASE_RADIUS, // in meters from center to furthest module
         new ReplanningConfig()
       ), 
