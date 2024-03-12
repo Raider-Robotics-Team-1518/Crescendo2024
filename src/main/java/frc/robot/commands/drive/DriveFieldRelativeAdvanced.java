@@ -73,9 +73,9 @@ public class DriveFieldRelativeAdvanced extends Command {
     if (Math.abs(rotSpeed) > .1){
       //if the test is true, just copy the DriveFieldCentric execute method
       RobotContainer.swerveDrive.driveFieldRelative(
-        awaySpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-        lateralSpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-        rotSpeed*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL ,
+        awaySpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR,
+        lateralSpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR,
+        rotSpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_ROTATIONAL ,
         veloMode
       );
       //for when rotation speed is zero, update the current angle
@@ -86,8 +86,8 @@ public class DriveFieldRelativeAdvanced extends Command {
     else {
       if(wasDriverControl && Math.abs(RobotContainer.swerveDrive.getRotationalVelocity()) > 90.0){
         RobotContainer.swerveDrive.driveFieldRelative(
-          awaySpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-          lateralSpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
+          awaySpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR,
+          lateralSpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR,
           0,
           veloMode
         );
@@ -95,8 +95,8 @@ public class DriveFieldRelativeAdvanced extends Command {
       }else{
         //if the test is false, still use driveFieldCentric(), but for last parameter use PIDController accessor function
         RobotContainer.swerveDrive.driveFieldRelative(
-          awaySpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-          lateralSpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
+          awaySpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR,
+          lateralSpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR,
           RobotContainer.swerveDrive.getCounterRotationPIDOut(currentAngle),
           veloMode
         );

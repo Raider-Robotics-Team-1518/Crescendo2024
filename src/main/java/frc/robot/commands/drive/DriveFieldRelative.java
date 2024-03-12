@@ -59,9 +59,9 @@ public class DriveFieldRelative extends Command {
     //double rotSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger) - Robot.robotContainer.getDriverAxis(Axis.kRightTrigger), 3);
 
     RobotContainer.swerveDrive.driveFieldRelative(
-      awaySpeed*Constants.DRIVER_SPEED_SCALE_LINEAR,
-      lateralSpeed*Constants.DRIVER_SPEED_SCALE_LINEAR_LATERAL,
-      rotSpeed*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL, 
+      awaySpeed*Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR,
+      lateralSpeed*Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR_LATERAL,
+      rotSpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_ROTATIONAL, 
       veloMode
     );
   }

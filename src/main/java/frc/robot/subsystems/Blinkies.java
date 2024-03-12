@@ -23,10 +23,10 @@ import frc.robot.LimelightHelpers.Results;
 
 public class Blinkies extends SubsystemBase {
   public LEDState lightState = LEDState.DEFAULT;
-  public final DigitalOutput dOutput1 = new DigitalOutput(1);
-  public final DigitalOutput dOutput2 = new DigitalOutput(2);
-  public final DigitalOutput dOutput3 = new DigitalOutput(3);
-  public final DigitalOutput dOutput4 = new DigitalOutput(4);
+  public final DigitalOutput dOutput1 = new DigitalOutput(6);
+  public final DigitalOutput dOutput2 = new DigitalOutput(7);
+  public final DigitalOutput dOutput3 = new DigitalOutput(8);
+  public final DigitalOutput dOutput4 = new DigitalOutput(9);
   private LimelightTarget_Fiducial llAprilTag = new LimelightHelpers.LimelightTarget_Fiducial();
   private LimeLight limelight = new LimeLight();
   private LimelightHelpers llHelpers = new LimelightHelpers();

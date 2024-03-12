@@ -5,15 +5,14 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.fmu.FullAiming;
-import frc.robot.commands.fmu.MoveArmToAngle;
 
-public class AutoAimArm extends Command {
-  /** Creates a new AutoAimArm. */
-  public AutoAimArm() {
+public class StopDriveTrain extends Command {
+  /** Creates a new StopDriveTrain. */
+
+  public StopDriveTrain() {
     // Use addRequirements() here to declare subsystem dependencies.
-
   }
 
   // Called when the command is initially scheduled.
@@ -23,25 +22,16 @@ public class AutoAimArm extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    /*
-     * Pseudo-code:
-     * if april tag is visible
-     *    determine distance
-     *    lookup table to find arm angle
-     * else
-     *    set default arm angle
-     * move arm to angle
-     */
-    if (RobotContainer.optimalArmAngle > 0) {
-      // new MoveArmToAngle(RobotContainer.optimalArmAngle);
-      new FullAiming();
-    }
-
+    RobotContainer.swerveDrive.stopAllModules();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    // I think we don't want to stop the intake here so that it will
+    // run until we call the AutoStopIntake command
+    // RobotContainer.fmu.setIntakeSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override

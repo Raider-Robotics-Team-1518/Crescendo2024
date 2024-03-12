@@ -35,7 +35,7 @@ public class FullAimingAmp extends Command {
             robotPose = RobotContainer.swerveDrive.getGyroInRad();
 
         } else {
-            set_angle = RobotContainer.optimalArmAngle;
+            set_angle = RobotContainer.optimalAmpArmAngle;
             horizOffset = 0;
         }
         // Check value of shoulder encoder

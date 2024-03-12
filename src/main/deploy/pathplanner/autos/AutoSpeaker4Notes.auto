@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.84,
+      "y": 4.47
+    },
+    "rotation": -59.23975473095842
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSide to 1st Note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1st Note to 2nd Note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2nd Note to 3rd Note"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

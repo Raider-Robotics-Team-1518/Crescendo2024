@@ -299,7 +299,8 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d initialHolonomicPose) {
-    driveOdometry.resetPosition(initialHolonomicPose.getRotation(), getSwerveModulePositions(), getCurPose2d());
+    // driveOdometry.resetPosition(initialHolonomicPose.getRotation(), getSwerveModulePositions(), getCurPose2d());
+    driveOdometry.resetPosition(getGyroRotation2d(), getSwerveModulePositions(), getCurPose2d());
   }
 
 
@@ -313,7 +314,7 @@ public class SwerveDrive extends SubsystemBase {
    * @param pose new current position
    */
   public void setCurPose2d(Pose2d pose) {
-    driveOdometry.resetPosition( getGyroRotation2d(), getSwerveModulePositions(), pose);
+    driveOdometry.resetPosition(getGyroRotation2d(), getSwerveModulePositions(), pose);
     hasPoseBeenSet = true;
   }
 

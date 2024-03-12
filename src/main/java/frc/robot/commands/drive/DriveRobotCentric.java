@@ -70,9 +70,9 @@ public class DriveRobotCentric extends Command {
     // double rotSpeed = Math.pow(Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger) - Robot.robotContainer.getDriverAxis(Axis.kRightTrigger), 3);
 
     RobotContainer.swerveDrive.driveRobotCentric(
-      forwardSpeed *Constants.DRIVER_SPEED_SCALE_LINEAR ,
-      strafeSpeed *Constants.DRIVER_SPEED_SCALE_LINEAR ,
-      rotSpeed*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL,
+      forwardSpeed *Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR ,
+      strafeSpeed *Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR ,
+      rotSpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_ROTATIONAL,
       veloMode,
       false
     );

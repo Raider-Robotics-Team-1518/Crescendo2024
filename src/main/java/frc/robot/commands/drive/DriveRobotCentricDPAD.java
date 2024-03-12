@@ -70,9 +70,9 @@ public class DriveRobotCentricDPAD extends Command {
     }
 
     RobotContainer.swerveDrive.driveRobotCentric(
-      forwardSpeed *Constants.DRIVER_SPEED_SCALE_LINEAR ,
-      strafeSpeed *Constants.DRIVER_SPEED_SCALE_LINEAR ,
-      rotSpeed*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL,
+      forwardSpeed *Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR ,
+      strafeSpeed *Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_LINEAR ,
+      rotSpeed*-Constants.DriveTrainScaling.DRIVER_SPEED_SCALE_ROTATIONAL,
       veloMode,
       false
       );

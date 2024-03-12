@@ -77,19 +77,21 @@ public final class Constants {
   public static final Rotation2d ROTATE_BY_PI = Rotation2d.fromDegrees(180);
 
   /* Swerve Module Positions */
-  public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.4826, 0.4826);// These are in meters
+  /* 2023 Coordinates */
+  /*public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.4826, 0.4826);// These are in meters
   public static final Translation2d REAR_LEFT_POSITION = new Translation2d(-0.4826, 0.4826);
   public static final Translation2d REAR_RIGHT_POSITION = new Translation2d(-0.4826, -0.4826);
   public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0.4826, -0.4826);
-  public static final double DRIVE_BASE_RADIUS = 0.4826; // in meters, distance from center to furthest module
+  public static final double DRIVE_BASE_RADIUS = 0.4826; // in meters, distance from center to furthest module */
+  /* 2024 Coordinates */
+  public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.23, 0.15);// These are in meters
+  public static final Translation2d REAR_LEFT_POSITION = new Translation2d(-0.26, 0.15);
+  public static final Translation2d REAR_RIGHT_POSITION = new Translation2d(-0.26, -0.59);
+  public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0.23, -0.59);
+  public static final double DRIVE_BASE_RADIUS = 0.4650; // in meters, distance from center to furthest module
 
   /* Swerve Module Drive Motor Constants */
   public static final double DRIVE_ENC_TO_METERS_FACTOR = 0.00001903342;
-  // rob old: (1motorRev/4096 u) * (8.14 outputRev/ 1 motorRev) * ((0.1016m *
-  // 3.1415)/ 1 outputRev) = 0.0006343
-  // semi working value (tested): 0.0000382966
-  // 382929
-  // 382966
   // !! newest calculation (not tested) !!
   // encoderPos*DRIVE_ENC_TO_METERS_FACTOR=distanceTraveled
   // encoderPos*(1/2048)*(1/8.14)*(2*3.14159265*0.1016)=distanceTraveled
@@ -119,10 +121,8 @@ public final class Constants {
   public static final double SWERVE_DRIVE_FF_VALUE = 1023 / (MOTOR_MAXIMUM_VELOCITY / DRIVE_ENC_TO_METERS_FACTOR);
 
   public static final class AutoConstants {
-    public static final PIDConstants TRANSLATION_PID = new PIDConstants(SWERVE_DRIVE_P_VALUE, SWERVE_DRIVE_I_VALUE,
-        SWERVE_DRIVE_D_VALUE);
-    public static final PIDConstants ANGLE_PID = new PIDConstants(0.4, 0, 0.01); // taken from YAGSL-Example code, needs
-                                                                                 // real values for us
+    public static final PIDConstants TRANSLATION_PID = new PIDConstants(SWERVE_DRIVE_P_VALUE, SWERVE_DRIVE_I_VALUE, SWERVE_DRIVE_D_VALUE);
+    public static final PIDConstants ANGLE_PID = new PIDConstants(SWERVE_ROT_P_VALUE, SWERVE_ROT_I_VALUE, SWERVE_ROT_D_VALUE); // real values for us
   }
 
   public static final double SWERVE_DRIVE_P_VELOCITY = 0.0256135252274057; // 0.2928
@@ -158,7 +158,7 @@ public final class Constants {
   public static final double MINIMUM_ROTATIONAL_OUTPUT = 0.10;
 
   /* Constant for turn to angle functions */
-  public static final double ROBOT_SPIN_P = 1.55;// tuned for drive/climber bot
+  public static final double ROBOT_SPIN_P = 1.05;// tuned for drive/climber bot
   public static final double ROBOT_SPIN_I = 0.0;
   public static final double ROBOT_SPIN_D = 0.01;
 
@@ -168,10 +168,13 @@ public final class Constants {
   public static final double ROBOT_COUNTER_SPIN_D = 0.001;
 
   /* Driver Scaling Constants */
-  public static final double DRIVER_SPEED_SCALE_LINEAR = 0.5; // 0.375;
-  public static final double DRIVER_SPEED_SCALE_LINEAR_LATERAL = 0.375;
-  public static final double DRIVER_SPEED_SCALE_ROTATIONAL = .75;
-  public static final double DRIVE_SPEED_SCALE_FACTOR = 0.2; // scale down for "slow mode" (right stick)
+  public static final class DriveTrainScaling {
+    public static final double DRIVER_SPEED_SCALE_LINEAR = 0.65; //  0.375;
+    public static final double DRIVER_SPEED_SCALE_LINEAR_LATERAL = 0.5;
+    public static final double DRIVER_SPEED_SCALE_ROTATIONAL = .5;
+    public static final double DRIVE_SPEED_SCALE_FACTOR = 0.2; // scale down for "slow mode" (right stick)
+
+  }
 
   /* IDENTIFICATION NUMBERS FOR DEVICES */
 
@@ -271,7 +274,7 @@ public final class Constants {
     // inches, distance from the center of the Limelight lens to the floor
     public static final double limelightMountingHeight = 8;
     // degrees, measured from vertical, with tilted up being positive
-    public static final double limelightMountingAngle = 25;
+    public static final double limelightMountingAngle = 24;
     // inches
     public static final double speakerTagHeight = 54.675; // 53.88;
     // inches
@@ -296,7 +299,7 @@ public final class Constants {
     public static final double armMinAngle = 92;
     public static final double armMaxAngle = 192;
     public static final double armLoadAngle = 175;
-    public static final double armSourceAngle = 115;
+    public static final double armSourceAngle = 120;
     public static final double armDefaultSpkrAngle = 161;
     public static final double climbMax = -340.0d;
     public static final double climbMin = -0.0d;

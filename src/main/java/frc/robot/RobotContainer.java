@@ -11,7 +11,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -20,15 +19,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.auto.AutoAimArm;
 import frc.robot.commands.auto.AutoIntake;
 import frc.robot.commands.auto.AutoShootSpeaker;
+import frc.robot.commands.auto.AutoSpeaker1;
 import frc.robot.commands.auto.AutoStopIntake;
+import frc.robot.commands.auto.StopDriveTrain;
 import frc.robot.commands.drive.DriveFieldRelative;
 import frc.robot.commands.drive.DriveRobotCentric;
-import frc.robot.commands.drive.util.DriveAdjustModulesManually;
 import frc.robot.commands.drive.util.DriveResetAllModulePositionsToZero;
 import frc.robot.commands.drive.util.pid.DriveRotationExport;
 import frc.robot.commands.drive.util.pid.DriveTranslationExport;
@@ -53,20 +51,14 @@ public class RobotContainer {
   // The robot's gamepads are defined here...
   
   public static final Joystick joystick = new Joystick(0);
-  // static final CommandXboxController driver = new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
+  //static final CommandXboxController driver = new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
   static final CommandXboxController codriver = new CommandXboxController(Constants.CODRIVER_CONTROLLER_PORT);
   
-/*
- * DRIVER BUTTONS are accessed like this:
- *  driver.a().onTrue(...) // accesses the A button on the driver controller
- *  codriver.y().whileTrue(...) // accesses the Y button on the co-driver controller
- */
-
   //The robot's subsystems are instantiated here
-  //public static SwerveDrive swerveDrive;
   public static SwerveDrive swerveDrive; 
   public static FieldManipulationUnit fmu;
   public static double optimalArmAngle = 161.0d;
+  public static double optimalAmpArmAngle = 96;
   public static double shooterSpeed = Constants.MotorSpeeds.shooterSpeedForSpeaker;
 
   /* Command Choosers */
@@ -87,6 +79,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("AutoShootSpeaker", new AutoShootSpeaker());
     NamedCommands.registerCommand("AutoAimArm", new AutoAimArm());
     NamedCommands.registerCommand("AutoStopIntake", new AutoStopIntake());
+    NamedCommands.registerCommand("StopMoving", new StopDriveTrain());
 
     swerveDrive = new SwerveDrive();
     // swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
@@ -107,8 +100,13 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    /* ==================== DRIVER BUTTONS ==================== */
+    /*
+      * DRIVER BUTTONS are accessed like this:
+      *  driver.a().onTrue(...) // accesses the A button on the driver controller
+      *  codriver.y().whileTrue(...) // accesses the Y button on the co-driver controller
+    */
 
+    /* ==================== DRIVER BUTTONS ==================== */
     JoystickButton button3 = new JoystickButton(joystick, 3);
     button3.toggleOnTrue(new DriveFieldRelative(false));
     button3.toggleOnFalse(new DriveRobotCentric(false));
@@ -119,8 +117,8 @@ public class RobotContainer {
     thumbButton.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
 
     /* =================== CODRIVER BUTTONS =================== */
-    codriver.x().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.onFalse(new Shooter(0));
-    codriver.b().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForAmp)); //.onFalse(new Shooter(0));
+    codriver.y().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.onFalse(new Shooter(0));
+    codriver.x().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForAmp)); //.onFalse(new Shooter(0));
     
     codriver.povUp().whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));
     codriver.povDown().whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
@@ -129,9 +127,6 @@ public class RobotContainer {
     codriver.a().whileTrue(new MoveArmToAngle(Constants.Limits.armSourceAngle));
 
   }
-
-
-
   /**
    * Define all autonomous modes here to have them 
    * appear in the autonomous select drop down menu.
@@ -141,6 +136,7 @@ public class RobotContainer {
     // Build an auto chooser. This will use Commands.none() as the default option.
     swerveDrive.setupPathPlanner();
     autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser.addOption("AutoSpeaker1", new MoveArmToAngle(161.0d).andThen(new AutoShootSpeaker()));
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
@@ -148,8 +144,8 @@ public class RobotContainer {
     SmartDashboard.putData(new DriveResetAllModulePositionsToZero());
 
     // 1518
-    SmartDashboard.putData(new DriveTranslationExport());
-    SmartDashboard.putData(new DriveRotationExport());
+    // SmartDashboard.putData(new DriveTranslationExport());
+    // SmartDashboard.putData(new DriveRotationExport());
     // SmartDashboard.putData("Drive Straight", Commands.sequence(Autos.autoDriveStraight()));
   }
 
