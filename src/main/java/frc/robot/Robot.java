@@ -95,9 +95,9 @@ public class Robot extends TimedRobot {
       }
     }
 
-    robotContainer.swerveDrive.resetGyro(); // gives warning about accessing a static
     autonomousCommand = RobotContainer.autoChooser.getSelected();
     if (autonomousCommand != null) {
+      robotContainer.swerveDrive.resetGyro(); // gives warning about accessing a static
       autonomousCommand.schedule();
     }
   }

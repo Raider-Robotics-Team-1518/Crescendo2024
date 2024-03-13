@@ -7,7 +7,6 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.commands.drive.DriveFieldRelativeAdvanced;
 import frc.robot.commands.fmu.FullAimingSpeaker;
 
 public class AutoSpeaker1 extends Command {
@@ -29,9 +28,12 @@ public class AutoSpeaker1 extends Command {
   public void execute() {
     timer.start();
     
-    RobotContainer.swerveDrive.driveFieldRelative(0.40d, 0, 0, false);
-    if(timer.hasElapsed(2.0d)){
-      new StopDriveTrain().andThen(new FullAimingSpeaker()).andThen(new AutoShootSpeaker()).end(false);
+    if(timer.hasElapsed(2.50d)){
+      RobotContainer.swerveDrive.stopAllModules();
+      // new StopDriveTrain().andThen(new FullAimingSpeaker()).andThen(new AutoShootSpeaker()).end(false);
+    } else {
+          // RobotContainer.swerveDrive.driveFieldRelative(0.40d, 0, 0, false);
+          RobotContainer.swerveDrive.driveRobotCentric(0.4d,0,0, false, false);
     }
   }
 
@@ -39,7 +41,6 @@ public class AutoSpeaker1 extends Command {
   @Override
   public void end(boolean interrupted) {
     timer.stop();
-    new StopDriveTrain();
   }
 
   // Returns true when the command should end.

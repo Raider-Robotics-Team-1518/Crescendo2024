@@ -40,6 +40,7 @@ public class FullAimingAmp extends Command {
         } else {
             set_angle = RobotContainer.optimalAmpArmAngle;
             horizOffset = 0;
+            h_aligned = true;
         }
         // Check value of shoulder encoder
         current_angle = RobotContainer.fmu.get_arm_position();
@@ -68,9 +69,6 @@ public class FullAimingAmp extends Command {
             RobotContainer.swerveDrive.stopAllModules();
             h_aligned = true;
         }
-        if (v_aligned && h_aligned) {
-            isFinished();
-        }
     }
 
     // Called once the command ends or is interrupted.
@@ -82,8 +80,11 @@ public class FullAimingAmp extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-
-        return false;
+        if (v_aligned && h_aligned) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

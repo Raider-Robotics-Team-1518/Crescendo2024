@@ -2,25 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.9,
-      "y": 4.552
+      "x": 1.45,
+      "y": 5.53
     },
-    "rotation": -58.829999999999984
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "StageSide drive back"
+            "name": "AutoAimArm"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "StageSide drive forward"
+            "name": "AutoShootSpeaker"
           }
         }
       ]

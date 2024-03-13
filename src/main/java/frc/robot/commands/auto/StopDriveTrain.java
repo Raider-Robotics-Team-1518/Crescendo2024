@@ -21,8 +21,8 @@ public class StopDriveTrain extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.swerveDrive.stopAllModules();
-    isFinished();
+    RobotContainer.swerveDrive.driveRobotCentric(0,0,0,false,false);
+  
   }
 
   // Called once the command ends or is interrupted.

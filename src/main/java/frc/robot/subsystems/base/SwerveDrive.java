@@ -107,8 +107,8 @@ public class SwerveDrive extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Gyro", this.getGyroInDeg());
-    //SmartDashboard.putNumber("XPos", getCurPose2d().getX());
-    //SmartDashboard.putNumber("YPos", getCurPose2d().getY());
+    SmartDashboard.putNumber("XPos", getCurPose2d().getX());
+    SmartDashboard.putNumber("YPos", getCurPose2d().getY());
     SmartDashboard.putBoolean("FieldRelativeEnabled", isFieldRelative);
 
 

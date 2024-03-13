@@ -6,48 +6,44 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-public class AutoShootSpeaker extends Command {
-  /** Creates a new AutoShootSpeaker. */
-  private double speed = Constants.MotorSpeeds.shooterSpeedForSpeaker;
-  private Timer timer;
+public class AutoDriveTime extends Command {
+  /** Creates a new AutoDriveTime. */
+  private Timer timer = new Timer();
+  private double delayTime = 0;
   private boolean isDone = false;
-
-  public AutoShootSpeaker() {
+  
+  public AutoDriveTime(double seconds) {
+    addRequirements(RobotContainer.swerveDrive);
+    delayTime = seconds;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer = new Timer();
-    isDone = false;
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    timer.start();  // no-op if already running
-    RobotContainer.fmu.setIntakeSpeed(Constants.MotorSpeeds.intakeReverse);
-    if (timer.hasElapsed(Constants.Timings.driveIntakeBackwardInSeconds)) {
-      RobotContainer.fmu.setShooterSpeed(speed);
-    }
-    if (timer.hasElapsed(Constants.Timings.bumpDelayInSeconds)) {
-      RobotContainer.fmu.bumpIntake();
-    }
-    if (timer.hasElapsed(1.5d)) {
+    RobotContainer.swerveDrive.driveRobotCentric(0.35,0,0,false,false);
+    
+    if(timer.hasElapsed(delayTime)){
+      RobotContainer.swerveDrive.driveRobotCentric(0,0,0,false,false);
       isDone = true;
     }
+  
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.stop();
-    RobotContainer.fmu.setIntakeSpeed(0);
-    RobotContainer.fmu.setShooterSpeed(0);
+    // I think we don't want to stop the intake here so that it will
+    // run until we call the AutoStopIntake command
+    // RobotContainer.fmu.setIntakeSpeed(0);
   }
 
   // Returns true when the command should end.

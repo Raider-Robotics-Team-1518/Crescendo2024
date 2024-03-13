@@ -7,6 +7,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.commands.fmu.FullAiming;
+import frc.robot.commands.fmu.FullAimingSpeaker;
 import frc.robot.commands.fmu.MoveArmToAngle;
 
 public class AutoAimArm extends Command {
@@ -34,7 +35,7 @@ public class AutoAimArm extends Command {
      */
     if (RobotContainer.optimalArmAngle > 0) {
       // new MoveArmToAngle(RobotContainer.optimalArmAngle);
-      new FullAiming();
+      new FullAimingSpeaker();
     }
 
   }

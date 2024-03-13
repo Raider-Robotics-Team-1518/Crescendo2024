@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.auto.AutoAimArm;
+import frc.robot.commands.auto.AutoDriveTime;
 import frc.robot.commands.auto.AutoIntake;
 import frc.robot.commands.auto.AutoShootSpeaker;
 import frc.robot.commands.auto.AutoSpeaker1;
@@ -74,19 +75,21 @@ public class RobotContainer {
   public RobotContainer() {
     joystick.setTwistChannel(2);
 
-    // Auto mode - Register Named Commands - needs to be at top of class
-    NamedCommands.registerCommand("AutoIntake", new AutoIntake());
-    NamedCommands.registerCommand("AutoShootSpeaker", new AutoShootSpeaker());
-    NamedCommands.registerCommand("AutoAimArm", new AutoAimArm());
-    NamedCommands.registerCommand("AutoStopIntake", new AutoStopIntake());
-    NamedCommands.registerCommand("StopMoving", new StopDriveTrain());
-
     swerveDrive = new SwerveDrive();
     // swerveDrive.setDefaultCommand(new DriveFieldRelative(false));
     swerveDrive.setDefaultCommand(new DriveRobotCentric(false)); // for joystick testing
 
     fmu = new FieldManipulationUnit();
     fmu.setDefaultCommand(new MoveArm());
+
+    // Auto mode - Register Named Commands - needs to be at top of class
+    NamedCommands.registerCommand("AutoIntake", new AutoIntake());
+    NamedCommands.registerCommand("AutoShootSpeaker", new AutoShootSpeaker());
+    NamedCommands.registerCommand("AutoAimArm", new FullAimingSpeaker());
+    NamedCommands.registerCommand("AutoStopIntake", new AutoStopIntake());
+    NamedCommands.registerCommand("StopMoving", new StopDriveTrain());
+    NamedCommands.registerCommand("DriveForward", new AutoDriveTime(1.5));
+
 
     configureSwerveSetup();
     configureSetupModes();
@@ -136,7 +139,7 @@ public class RobotContainer {
     // Build an auto chooser. This will use Commands.none() as the default option.
     swerveDrive.setupPathPlanner();
     autoChooser = AutoBuilder.buildAutoChooser();
-    autoChooser.addOption("AutoSpeaker1", new MoveArmToAngle(161.0d).andThen(new AutoShootSpeaker()));
+    // autoChooser.addOption("AutoSpeaker1", new AutoSpeaker1());
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 

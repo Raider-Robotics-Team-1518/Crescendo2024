@@ -87,18 +87,18 @@ public final class Constants {
     public static final double DRIVE_BASE_RADIUS = 0.4826; // in meters, distance from center to furthest module */
     
     /* 2024 Coordinates - Location of Gyro */
-    /*public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.23, 0.15);// These are in meters
+    public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.23, 0.15);// These are in meters
     public static final Translation2d REAR_LEFT_POSITION = new Translation2d(-0.26, 0.15);
     public static final Translation2d REAR_RIGHT_POSITION = new Translation2d(-0.26, -0.59);
     public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0.23, -0.59);
-    public static final double DRIVE_BASE_RADIUS = 0.4650; // in meters, distance from center to furthest module */
+    public static final double DRIVE_BASE_RADIUS = 0.4650; // in meters, distance from center to furthest module
     
     /* 2024 Coordinates - From Center of Robot */
-    public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.245, 0.37);// These are in meters
+    /* public static final Translation2d FRONT_LEFT_POSITION = new Translation2d(0.245, 0.37);// These are in meters
     public static final Translation2d REAR_LEFT_POSITION = new Translation2d(-0.245, 0.37);
     public static final Translation2d REAR_RIGHT_POSITION = new Translation2d(-0.245, -0.37);
     public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(0.245, -0.37);
-    public static final double DRIVE_BASE_RADIUS = 0.4650; // in meters, distance from center to furthest module
+    public static final double DRIVE_BASE_RADIUS = 0.4650; // in meters, distance from center to furthest module */
   }
   /* Swerve Module Drive Motor Constants */
   public static final double DRIVE_ENC_TO_METERS_FACTOR = 0.00001903342;
@@ -125,14 +125,14 @@ public final class Constants {
    * Input: ControlPercent Speed
    * Output: Translation Position (Pose2d X or Y)
    */
-  public static final double SWERVE_DRIVE_P_VALUE = 0.2928; // 0.2928
-  public static final double SWERVE_DRIVE_I_VALUE = 0.0;
+  public static final double SWERVE_DRIVE_P_VALUE = 0.02928;
+  public static final double SWERVE_DRIVE_I_VALUE = 0.0d;
   public static final double SWERVE_DRIVE_D_VALUE = 0.007322; // 0.00089375
   public static final double SWERVE_DRIVE_FF_VALUE = 1023 / (MOTOR_MAXIMUM_VELOCITY / DRIVE_ENC_TO_METERS_FACTOR);
 
   public static final class AutoConstants {
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(SWERVE_DRIVE_P_VALUE, SWERVE_DRIVE_I_VALUE, SWERVE_DRIVE_D_VALUE);
-    public static final PIDConstants ANGLE_PID = new PIDConstants(ROBOT_SPIN_P, ROBOT_SPIN_I, ROBOT_SPIN_D); // real values for us
+    public static final PIDConstants ANGLE_PID = new PIDConstants(SWERVE_ROT_P_VALUE, SWERVE_ROT_I_VALUE, SWERVE_ROT_D_VALUE); // real values for us
   }
 
   public static final double SWERVE_DRIVE_P_VELOCITY = 0.0256135252274057; // 0.2928
@@ -154,7 +154,7 @@ public final class Constants {
    * Input: Motor ControlPercent Speed
    * Output: Encoder Position (In Radians)
    */
-  public static final double SWERVE_ROT_P_VALUE = 0.2241671475395803; // 0.02*4 rob
+  public static final double SWERVE_ROT_P_VALUE = 0.092241671475395803; // 0.02*4 rob
   public static final double SWERVE_ROT_I_VALUE = 0.0;
   public static final double SWERVE_ROT_D_VALUE = 0.006725014426187409; // .05*4 rob
   public static final double SWERVE_ROT_I_ZONE_VALUE = 0;

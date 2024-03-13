@@ -2,25 +2,31 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.89,
-      "y": 6.592
+      "x": 1.45,
+      "y": 5.53
     },
-    "rotation": 60.09
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "AmpSide drive back"
+            "name": "AutoAimArm"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "AmpSide drive forward"
+            "name": "AutoShootSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveForward"
           }
         }
       ]
