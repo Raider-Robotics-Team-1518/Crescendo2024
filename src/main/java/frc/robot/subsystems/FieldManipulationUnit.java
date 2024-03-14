@@ -41,7 +41,7 @@ public class FieldManipulationUnit extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kMXP;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   public double climb_pos = 0.0d;
-
+  public boolean climbStop = false; // Used on dashboard to turn RED when at max or min position
 
   public FieldManipulationUnit () {
     lead_shooter_motor = new TalonFX(Constants.LEAD_SHOOTER_MOTOR); // new CANSparkMax(Constants.LEAD_SHOOTER_MOTOR, MotorType.kBrushless);
@@ -114,11 +114,19 @@ public class FieldManipulationUnit extends SubsystemBase {
       climb_motor.set(power);
     } else {
       if((climb_pos <= Constants.Limits.climbMin) && (Math.signum(power) > 0)) {
-      climb_motor.set(power);
+        climb_motor.set(power);
       } else {
-        climb_motor.set(0.0);
+          climb_motor.set(0.0);
       }
     }
+  }
+
+  public void override_move_climb(double power) {
+    climb_motor.set(power);
+  }
+
+  public void climbResetEncoder() {
+    climb_motor.getEncoder().setPosition(0);
   }
 
   public void stop_climb(){
@@ -172,5 +180,12 @@ public class FieldManipulationUnit extends SubsystemBase {
         stopIntake();
       }
     }
+    // Dashboard light for climb max/min position
+    if (climb_pos <= Constants.Limits.climbMax || climb_pos >= Constants.Limits.climbMin) {
+      climbStop = true;
+    } else {
+      climbStop = false;
+    }
+    SmartDashboard.putBoolean("Climb Stop", climbStop);
   }
 }

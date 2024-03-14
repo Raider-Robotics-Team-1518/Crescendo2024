@@ -235,11 +235,11 @@ public final class Constants {
     public static final double intakeSpeed = 0.45d;
     public static final double intakeBumpSpeed = 1.0d;
     public static final double intakeReverse = -0.20d;
-    public static final double shooterSpeedForSpeaker = 0.85d;
+    public static final double shooterSpeedForSpeaker = 1.0d;
     public static final double shooterSpeedForAmp = 0.5d;
     public static final double armPowerUp = 0.75d;
     public static final double armPowerDn = 0.25d;
-    public static final double climbPower = 0.50d;
+    public static final double climbPower = 0.75d;
   }
 
   public static final class Timings {
@@ -311,7 +311,7 @@ public final class Constants {
     public static final double armLoadAngle = 175;
     public static final double armSourceAngle = 120;
     public static final double armDefaultSpkrAngle = 161;
-    public static final double climbMax = -340.0d;
+    public static final double climbMax = -290.0d;
     public static final double climbMin = -0.0d;
   }
 

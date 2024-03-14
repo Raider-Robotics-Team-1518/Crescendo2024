@@ -34,6 +34,7 @@ import frc.robot.commands.drive.util.pid.DriveTranslationExport;
 import frc.robot.commands.fmu.MoveArm;
 import frc.robot.commands.fmu.MoveArmToAngle;
 import frc.robot.commands.fmu.Climb;
+import frc.robot.commands.fmu.ClimbResetEncoder;
 import frc.robot.commands.fmu.FullAimingSpeaker;
 import frc.robot.commands.fmu.FullAimingAmp;
 import frc.robot.commands.fmu.Shooter;
@@ -118,16 +119,21 @@ public class RobotContainer {
     triggerButton.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeSpeed));
     JoystickButton thumbButton = new JoystickButton(joystick, 2);
     thumbButton.whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
+    JoystickButton climbOverride = new JoystickButton(joystick, 7);
+    climbOverride.whileTrue(new Climb(Constants.MotorSpeeds.climbPower, true));
+    // JoystickButton climbResetEncoder = new JoystickButton(joystick, 8);
+    // climbResetEncoder.onTrue(new ClimbResetEncoder());
 
     /* =================== CODRIVER BUTTONS =================== */
     codriver.y().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForSpeaker)); //.onFalse(new Shooter(0));
     codriver.x().debounce(0.05d).whileTrue(new Shooter(Constants.MotorSpeeds.shooterSpeedForAmp)); //.onFalse(new Shooter(0));
     
-    codriver.povUp().whileTrue(new Climb(-Constants.MotorSpeeds.climbPower));
-    codriver.povDown().whileTrue(new Climb(Constants.MotorSpeeds.climbPower));
+    codriver.povUp().whileTrue(new Climb(-Constants.MotorSpeeds.climbPower, false));  // Up
+    codriver.povDown().whileTrue(new Climb(Constants.MotorSpeeds.climbPower, false));  // Down
     codriver.leftBumper().whileTrue(new FullAimingSpeaker()); // MoveArmToAngle(optimalArmAngle));
     codriver.rightBumper().whileTrue(new FullAimingAmp());
     codriver.a().whileTrue(new MoveArmToAngle(Constants.Limits.armSourceAngle));
+    codriver.b().whileTrue(new ShooterIntake(Constants.MotorSpeeds.intakeReverse));
 
   }
   /**
