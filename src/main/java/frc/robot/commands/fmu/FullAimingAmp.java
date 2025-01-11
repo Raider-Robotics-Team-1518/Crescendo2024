@@ -30,7 +30,6 @@ public class FullAimingAmp extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        RobotContainer.shooterSpeed = Constants.MotorSpeeds.shooterSpeedForAmp;
         // Check to see if LimeLight has acquired target lock
         if (isTargetVisible) { // April Tag Visible
             set_angle = 96.0d;
@@ -38,7 +37,7 @@ public class FullAimingAmp extends Command {
             robotPose = RobotContainer.swerveDrive.getGyroInRad();
 
         } else {
-            set_angle = RobotContainer.optimalAmpArmAngle;
+            set_angle = Constants.Limits.armDefaultAmpAngle;
             horizOffset = 0;
             h_aligned = true;
         }

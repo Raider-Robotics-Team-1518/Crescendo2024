@@ -9,6 +9,7 @@ public class MoveArmToAngle extends Command {
     // private double powerDn = Constants.MotorSpeeds.armPowerDn;
     private double current_angle = RobotContainer.fmu.get_arm_position();
     private double set_angle = current_angle;
+    private boolean isDone = false;
     
     public MoveArmToAngle(double set_angle) {
         addRequirements(RobotContainer.fmu);
@@ -32,6 +33,7 @@ public class MoveArmToAngle extends Command {
             RobotContainer.fmu.move_arm(v_sign * (powerUp + 0.25d));
         } else {
             RobotContainer.fmu.stop_arm();
+            isDone = true;
         }
     }
 
@@ -45,7 +47,7 @@ public class MoveArmToAngle extends Command {
     @Override
     public boolean isFinished() {
 
-        return false;
+        return isDone;
     }
 
 }

@@ -179,9 +179,9 @@ public final class Constants {
 
   /* Driver Scaling Constants */
   public static final class DriveTrainScaling {
-    public static final double DRIVER_SPEED_SCALE_LINEAR = 0.65; //  0.375;
-    public static final double DRIVER_SPEED_SCALE_LINEAR_LATERAL = 0.5;
-    public static final double DRIVER_SPEED_SCALE_ROTATIONAL = .5;
+    public static final double DRIVER_SPEED_SCALE_LINEAR = 0.90; //  0.375;
+    public static final double DRIVER_SPEED_SCALE_LINEAR_LATERAL = 0.90;
+    public static final double DRIVER_SPEED_SCALE_ROTATIONAL = .75;
     public static final double DRIVE_SPEED_SCALE_FACTOR = 0.2; // scale down for "slow mode" (right stick)
 
   }
@@ -237,7 +237,7 @@ public final class Constants {
     public static final double intakeReverse = -0.20d;
     public static final double shooterSpeedForSpeaker = 1.0d;
     public static final double shooterSpeedForAmp = 0.5d;
-    public static final double armPowerUp = 0.75d;
+    public static final double armPowerUp = 0.85d;
     public static final double armPowerDn = 0.25d;
     public static final double climbPower = 0.75d;
   }
@@ -309,8 +309,9 @@ public final class Constants {
     public static final double armMinAngle = 92;
     public static final double armMaxAngle = 192;
     public static final double armLoadAngle = 175;
-    public static final double armSourceAngle = 120;
-    public static final double armDefaultSpkrAngle = 161;
+    public static final double armSourceAngle = 110;
+    public static final double armDefaultSpkrAngle = 158;
+    public static final double armDefaultAmpAngle = 92;
     public static final double climbMax = -290.0d;
     public static final double climbMin = -0.0d;
   }

@@ -4,42 +4,50 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.fmu.MoveArmToAngle;
 
-public class AutoIntake extends Command {
-  /** Creates a new AutoIntake. */
-  private double speed = Constants.MotorSpeeds.intakeSpeed;
+public class AutoShootAmp extends Command {
+  /** Creates a new AutoShootSpeaker. */
+  private double speed = Constants.MotorSpeeds.shooterSpeedForAmp;
+  private Timer timer;
   private boolean isDone = false;
 
-  public AutoIntake() {
+  public AutoShootAmp() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer = new Timer();
+    isDone = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    new MoveArmToAngle(Constants.Limits.armMaxAngle);
-    if (!RobotContainer.fmu.isNoteLoaded()) {
-      RobotContainer.fmu.setIntakeSpeed(speed);
-    } else {
+    timer.start();  // no-op if already running
+    RobotContainer.fmu.setIntakeSpeed(Constants.MotorSpeeds.intakeReverse);
+    if (timer.hasElapsed(Constants.Timings.driveIntakeBackwardInSeconds)) {
+      RobotContainer.fmu.setShooterSpeed(speed);
+    }
+    if (timer.hasElapsed(Constants.Timings.bumpDelayInSeconds)) {
+      RobotContainer.fmu.bumpIntake();
+    }
+    if (timer.hasElapsed(1.5d)) {
       isDone = true;
     }
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // I think we don't want to stop the intake here so that it will
-    // run until we call the AutoStopIntake command
-    // RobotContainer.fmu.setIntakeSpeed(0);
+    timer.stop();
+    RobotContainer.fmu.setIntakeSpeed(0);
+    RobotContainer.fmu.setShooterSpeed(0);
   }
 
   // Returns true when the command should end.

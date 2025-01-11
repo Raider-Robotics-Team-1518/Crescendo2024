@@ -10,6 +10,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.fmu.MoveArmToAngle;
 
 public class AutoStopIntake extends Command {
+  private boolean isDone = false;
   /** Creates a new AutoStopIntake. */
   public AutoStopIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,6 +25,7 @@ public class AutoStopIntake extends Command {
   public void execute() {
     new MoveArmToAngle(Constants.Limits.armLoadAngle);
     RobotContainer.fmu.stopIntake();
+    isDone = true;
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +37,6 @@ public class AutoStopIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isDone;
   }
 }

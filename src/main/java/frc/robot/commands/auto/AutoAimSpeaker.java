@@ -6,13 +6,11 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.commands.fmu.FullAiming;
 import frc.robot.commands.fmu.FullAimingSpeaker;
-import frc.robot.commands.fmu.MoveArmToAngle;
 
-public class AutoAimArm extends Command {
+public class AutoAimSpeaker extends Command {
   /** Creates a new AutoAimArm. */
-  public AutoAimArm() {
+  public AutoAimSpeaker() {
     // Use addRequirements() here to declare subsystem dependencies.
 
   }
